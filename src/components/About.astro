@@ -1,0 +1,157 @@
+---
+import { Image } from 'astro:assets';
+import aboutPhoto from '../assets/photos/headshot-6.jpeg';
+import { credentials } from '../data/credentials';
+---
+
+<section id="about" class="about">
+	<div class="about-grid">
+		<div class="photo-frame">
+			<Image src={aboutPhoto} alt="Grace Lakey standing in a black suit against a light wall" />
+		</div>
+
+		<div class="about-content">
+			<h2>About</h2>
+
+			<p>
+				At 27, Grace Lakey's whole life changed with an Ancestry DNA test she took for fun. It
+				revealed a world-champion auctioneer dad she never knew she had, and set off a chain
+				reaction: she left corporate America for the unconventional world of auctioneering, and
+				never looked back.
+			</p>
+
+			<p>
+				Grace's work goes way beyond her <em>mad cool</em> bid calling skills. She consults with
+				fundraising committees on strategy, emcees events that keep people in their seats (or
+				jumping to their feet in a good way), and brings the kind of energy that turns a quiet
+				ballroom into a crowd eager to participate. When you see her tagline, "Add a little
+				sparkle, raise a lot of money," know that she means every word. And yes, she can sing,
+				too.
+			</p>
+
+			<p>
+				Grace is a licensed auctioneer. She teaches at three of the largest auction schools in
+				the country, competes in bid calling competitions, and co-owns AuctionStream, where she
+				hosts weekly live auctions on Whatnot and TikTok with her business partner Gracie.
+			</p>
+
+			<p>
+				Off the clock, Grace soaks in time with her (now much larger) family and travels around
+				the world with her husband, Nate, and their fur-baby, Lady Bird. She is all about chasing
+				dreams and making the most out of life.
+			</p>
+
+			<div class="cta-line">
+				<p class="cta-text">Ready to raise the bar and the paddles? Let's talk.</p>
+				<a href="#book" class="button">check availability</a>
+			</div>
+
+			<ul class="credentials">
+				{credentials.map((credential) => (
+					<li class="credential">{credential.label}</li>
+				))}
+			</ul>
+		</div>
+	</div>
+</section>
+
+<style>
+	.about {
+		background-color: var(--cream);
+		color: var(--ink);
+		padding: 6rem 1.5rem;
+	}
+
+	.about-grid {
+		max-width: 72rem;
+		margin: 0 auto;
+		display: grid;
+		gap: 3rem;
+	}
+
+	.about-content h2 {
+		font-size: clamp(2.25rem, 5vw, 4rem);
+		margin-bottom: 2rem;
+	}
+
+	.photo-frame {
+		position: relative;
+		max-width: 24rem;
+		margin: 0 auto;
+		aspect-ratio: 4 / 5;
+	}
+
+	.photo-frame::before {
+		content: '';
+		position: absolute;
+		top: 16px;
+		left: 16px;
+		right: -16px;
+		bottom: -16px;
+		border: 2px solid var(--coral);
+		border-radius: 1rem;
+		z-index: 0;
+	}
+
+	.photo-frame :global(img) {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 15%;
+		border-radius: 1rem;
+	}
+
+	.about-content p {
+		margin-bottom: 1.25rem;
+	}
+
+	.cta-line {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.25rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.cta-text {
+		font-family: 'Fraunces', serif;
+		font-weight: 700;
+		font-size: 1.35rem;
+		margin-bottom: 0;
+	}
+
+	.credentials {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		list-style: none;
+		margin-top: 2rem;
+	}
+
+	.credential {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.4rem 1rem;
+		border: 1.5px solid var(--mustard);
+		border-radius: 999px;
+		color: var(--ink);
+		font-size: 0.85rem;
+		font-weight: 500;
+	}
+
+	@media (min-width: 901px) {
+		.about-grid {
+			grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+			align-items: center;
+			gap: 2.5rem;
+		}
+
+		.photo-frame {
+			margin: 0;
+			max-width: none;
+			width: 100%;
+		}
+	}
+</style>
