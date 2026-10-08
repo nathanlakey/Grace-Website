@@ -1,0 +1,221 @@
+---
+import { Image } from 'astro:assets';
+import { galleryPhotos } from '../data/gallery';
+---
+
+<section id="gallery" class="gallery">
+	<div class="gallery-inner">
+		<h2>Gallery</h2>
+
+		<ul class="gallery-grid">
+			{galleryPhotos.map((photo, index) => (
+				<li class="gallery-item">
+					<button type="button" class="gallery-trigger" data-index={index}>
+						<Image src={photo.src} alt={photo.alt} loading="lazy" />
+					</button>
+				</li>
+			))}
+		</ul>
+	</div>
+
+	<dialog class="lightbox" aria-label="Photo gallery">
+		<button type="button" class="lightbox-close" aria-label="close">&times;</button>
+		<button type="button" class="lightbox-prev" aria-label="previous photo">&#8249;</button>
+		<img class="lightbox-image" src="" alt="" />
+		<button type="button" class="lightbox-next" aria-label="next photo">&#8250;</button>
+	</dialog>
+</section>
+
+<script>
+	const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('.gallery-trigger'));
+	const dialog = document.querySelector<HTMLDialogElement>('.lightbox');
+	const lightboxImage = dialog?.querySelector<HTMLImageElement>('.lightbox-image');
+	const prevButton = dialog?.querySelector<HTMLButtonElement>('.lightbox-prev');
+	const nextButton = dialog?.querySelector<HTMLButtonElement>('.lightbox-next');
+	const closeButton = dialog?.querySelector<HTMLButtonElement>('.lightbox-close');
+
+	let currentIndex = 0;
+	let lastTrigger: HTMLButtonElement | null = null;
+
+	function show(index: number) {
+		currentIndex = (index + triggers.length) % triggers.length;
+		const img = triggers[currentIndex].querySelector('img');
+		if (img && lightboxImage) {
+			lightboxImage.src = img.currentSrc || img.src;
+			lightboxImage.alt = img.alt;
+		}
+	}
+
+	function openLightbox(index: number, trigger: HTMLButtonElement) {
+		lastTrigger = trigger;
+		show(index);
+		dialog?.showModal();
+	}
+
+	triggers.forEach((trigger, index) => {
+		trigger.addEventListener('click', () => openLightbox(index, trigger));
+	});
+
+	prevButton?.addEventListener('click', () => show(currentIndex - 1));
+	nextButton?.addEventListener('click', () => show(currentIndex + 1));
+	closeButton?.addEventListener('click', () => dialog?.close());
+
+	dialog?.addEventListener('click', (event) => {
+		if (event.target === dialog) dialog.close();
+	});
+
+	dialog?.addEventListener('keydown', (event) => {
+		if (event.key === 'ArrowLeft') show(currentIndex - 1);
+		if (event.key === 'ArrowRight') show(currentIndex + 1);
+	});
+
+	dialog?.addEventListener('close', () => {
+		// defer so it runs after the browser's own post-click focus handling
+		setTimeout(() => lastTrigger?.focus(), 0);
+	});
+</script>
+
+<style>
+	.gallery {
+		background-color: var(--cream);
+		color: var(--ink);
+		padding: 6rem 1.5rem;
+	}
+
+	.gallery-inner {
+		max-width: 72rem;
+		margin: 0 auto;
+	}
+
+	.gallery h2 {
+		font-size: clamp(2.25rem, 5vw, 4rem);
+		margin-bottom: 2.5rem;
+	}
+
+	.gallery-grid {
+		list-style: none;
+		column-count: 1;
+		column-gap: 2.5rem;
+	}
+
+	.gallery-item {
+		break-inside: avoid;
+		margin-bottom: 2.5rem;
+	}
+
+	.gallery-trigger {
+		display: block;
+		width: 100%;
+		background-color: var(--cream);
+		border: none;
+		padding: 0;
+		cursor: pointer;
+	}
+
+	.gallery-trigger :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	@media (min-width: 641px) {
+		.gallery-grid {
+			column-count: 2;
+		}
+	}
+
+	@media (min-width: 901px) {
+		.gallery-grid {
+			column-count: 3;
+		}
+
+		.gallery-trigger {
+			background-color: #fff;
+			padding: 12px 12px 48px;
+			box-shadow: 0 6px 16px color-mix(in srgb, var(--ink) 25%, transparent);
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.gallery-item:nth-child(3n + 1) .gallery-trigger {
+			transform: rotate(-2deg);
+		}
+
+		.gallery-item:nth-child(3n + 2) .gallery-trigger {
+			transform: rotate(1.5deg);
+		}
+
+		.gallery-item:nth-child(3n + 3) .gallery-trigger {
+			transform: rotate(-1deg);
+		}
+
+		.gallery-trigger:hover,
+		.gallery-trigger:focus-visible {
+			transform: rotate(0deg) translateY(-6px);
+			box-shadow: 0 12px 24px color-mix(in srgb, var(--ink) 30%, transparent);
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.gallery-trigger {
+				transition: none;
+			}
+		}
+	}
+
+	.lightbox {
+		border: none;
+		padding: 0;
+		margin: auto;
+		background: transparent;
+		max-width: 90vw;
+		max-height: 90vh;
+		overflow: visible;
+	}
+
+	.lightbox::backdrop {
+		background-color: color-mix(in srgb, var(--ink) 85%, transparent);
+	}
+
+	.lightbox-image {
+		display: block;
+		max-width: 90vw;
+		max-height: 90vh;
+		width: auto;
+		height: auto;
+		border-radius: 0.5rem;
+	}
+
+	.lightbox-close,
+	.lightbox-prev,
+	.lightbox-next {
+		position: absolute;
+		background-color: var(--ink);
+		color: var(--cream);
+		border: none;
+		border-radius: 999px;
+		cursor: pointer;
+		width: 2.75rem;
+		height: 2.75rem;
+		font-size: 1.5rem;
+		line-height: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.lightbox-close {
+		top: -1.25rem;
+		right: -1.25rem;
+	}
+
+	.lightbox-prev {
+		left: -1.25rem;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.lightbox-next {
+		right: -1.25rem;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+</style>
