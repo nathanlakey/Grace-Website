@@ -1,0 +1,257 @@
+---
+import { services } from '../data/services';
+---
+
+<section id="services" class="services">
+	<div class="services-inner">
+		<h2>My Services</h2>
+		<p class="services-hint">tap a service to explore</p>
+		<!-- TODO: intro text between "My Services" heading and the tiles — not found in docs/copy.md -->
+
+		<ul class="tiles">
+			{services.map((service, index) => (
+				<li class="tile" data-color={service.color}>
+					<button
+						type="button"
+						class="tile-toggle"
+						aria-expanded={index === 0 ? 'true' : 'false'}
+						aria-controls={`service-panel-${index}`}
+						id={`service-toggle-${index}`}
+					>
+						<span class="tile-title">{service.title}</span>
+						<span class="tile-icon" aria-hidden="true"></span>
+					</button>
+
+					<div class="tile-panel-wrap">
+						<div
+							class="tile-panel"
+							id={`service-panel-${index}`}
+							role="region"
+							aria-labelledby={`service-toggle-${index}`}
+							aria-hidden={index !== 0}
+						>
+							{service.description.map((paragraph) => (
+								<p>{paragraph}</p>
+							))}
+							{service.bullets && (
+								<ul class="tile-bullets">
+									{service.bullets.map((bullet) => (
+										<li>{bullet}</li>
+									))}
+								</ul>
+							)}
+						</div>
+					</div>
+				</li>
+			))}
+		</ul>
+
+		<!-- TODO: closing line from Grace -->
+		<a href="#book" class="button">check availability</a>
+	</div>
+</section>
+
+<script>
+	const toggles = document.querySelectorAll<HTMLButtonElement>('.tile-toggle');
+	const hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+	function setPanelState(toggle: HTMLButtonElement, isOpen: boolean) {
+		toggle.setAttribute('aria-expanded', String(isOpen));
+		const panel = document.getElementById(toggle.getAttribute('aria-controls') ?? '');
+		panel?.setAttribute('aria-hidden', String(!isOpen));
+	}
+
+	function activate(toggle: HTMLButtonElement) {
+		toggles.forEach((other) => {
+			setPanelState(other, other === toggle);
+		});
+	}
+
+	toggles.forEach((toggle) => {
+		toggle.addEventListener('click', () => {
+			const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+			if (isOpen) {
+				setPanelState(toggle, false);
+			} else {
+				activate(toggle);
+			}
+		});
+
+		toggle.addEventListener('mouseenter', () => {
+			if (hoverCapable.matches) activate(toggle);
+		});
+	});
+</script>
+
+<style>
+	.services {
+		background-color: var(--coral);
+		color: var(--ink);
+		padding: 6rem 1.5rem;
+	}
+
+	.services-inner {
+		max-width: 72rem;
+		margin: 0 auto;
+	}
+
+	.services h2 {
+		font-size: clamp(2.25rem, 5vw, 4rem);
+		margin-bottom: 1rem;
+	}
+
+	.services-hint {
+		text-transform: lowercase;
+		color: color-mix(in srgb, var(--ink) 70%, transparent);
+		margin-bottom: 2rem;
+	}
+
+	.tiles {
+		list-style: none;
+		display: grid;
+		grid-template-columns: 1fr;
+		align-items: start;
+		gap: 1.5rem;
+		max-width: 1000px;
+		margin: 0 auto 3rem;
+	}
+
+	.tile {
+		border-radius: 1rem;
+		overflow: hidden;
+	}
+
+	.tile[data-color='mustard'] {
+		background-color: var(--mustard);
+	}
+
+	.tile[data-color='cream'] {
+		background-color: var(--cream);
+	}
+
+	.tile-toggle {
+		width: 100%;
+		min-height: 5rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1.5rem;
+		background: none;
+		border: none;
+		color: var(--ink);
+		text-align: left;
+		cursor: pointer;
+	}
+
+	.tile-title {
+		font-family: 'Fraunces', serif;
+		font-weight: 700;
+		font-size: 1.25rem;
+		line-height: 1.3;
+		min-height: 3.25rem;
+		display: flex;
+		align-items: center;
+	}
+
+	.tile-icon {
+		flex-shrink: 0;
+		position: relative;
+		width: 1.25rem;
+		height: 1.25rem;
+		transition: transform 0.2s ease;
+	}
+
+	.tile-icon::before,
+	.tile-icon::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		background-color: var(--ink);
+		transform: translate(-50%, -50%);
+	}
+
+	.tile-icon::before {
+		width: 100%;
+		height: 2px;
+	}
+
+	.tile-icon::after {
+		width: 2px;
+		height: 100%;
+	}
+
+	.tile-toggle[aria-expanded='true'] .tile-icon {
+		transform: rotate(45deg);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tile-icon {
+			transition: none;
+		}
+	}
+
+	.tile-panel-wrap {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 220ms ease;
+	}
+
+	.tile-toggle[aria-expanded='true'] + .tile-panel-wrap {
+		grid-template-rows: 1fr;
+	}
+
+	.tile-panel {
+		overflow: hidden;
+		min-height: 0;
+		padding: 0 1.5rem 1.5rem;
+		opacity: 0;
+		transform: translateY(8px);
+		transition: opacity 220ms ease, transform 220ms ease;
+	}
+
+	.tile-toggle[aria-expanded='true'] + .tile-panel-wrap .tile-panel {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tile-panel-wrap,
+		.tile-panel {
+			transition: none;
+		}
+	}
+
+	.tile-panel p {
+		margin-bottom: 1rem;
+	}
+
+	.tile-panel p:last-child {
+		margin-bottom: 0;
+	}
+
+	.tile-bullets {
+		margin-top: 1rem;
+		padding-left: 1.25rem;
+	}
+
+	.tile-bullets li {
+		margin-bottom: 0.5rem;
+	}
+
+	.services .button {
+		background-color: var(--ink);
+		color: var(--cream);
+	}
+
+	.services .button:hover {
+		background-color: color-mix(in srgb, var(--ink) 85%, var(--cream));
+	}
+
+	@media (min-width: 641px) {
+		.tiles {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style>
