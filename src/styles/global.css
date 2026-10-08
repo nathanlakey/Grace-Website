@@ -26,9 +26,13 @@ select {
 :root {
 	--cream: #F4EFE4;
 	--ink: #141414;
+	--crimson: #A11D33;
 	--coral: #EE7B6F;
 	--coral-dark: #D9655A;
 	--mustard: #D9A441;
+	--mustard-light: #F7C873;
+	--charcoal: #5B5856;
+	--pink: #F4B6B2;
 	--nav-height: 4.5rem;
 }
 
@@ -39,7 +43,7 @@ section[id] {
 body {
 	background-color: var(--cream);
 	color: var(--ink);
-	font-family: 'Inter', sans-serif;
+	font-family: 'DM Sans', sans-serif;
 	line-height: 1.6;
 }
 
@@ -49,9 +53,10 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: 'Fraunces', serif;
-	font-weight: 700;
-	line-height: 1.05;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 900;
+	letter-spacing: -0.02em;
+	line-height: 1;
 }
 
 .button {

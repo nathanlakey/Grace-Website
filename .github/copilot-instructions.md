@@ -1,13 +1,13 @@
 # Grace Lakey website: project rules
 - Stack: Astro + TypeScript + plain CSS. No Tailwind, no UI libraries.
 - All site text comes from docs/copy.md, word for word. Never invent marketing copy; leave a "TODO:" if text is missing.
-- Colors: always use the CSS variables in src/styles/global.css (--cream, --ink, --coral, --coral-dark, --mustard). Never hardcode hex colors in components.
-- Headings use Fraunces; body text uses Inter.
+- Colors: always use the CSS variables in src/styles/global.css (--cream, --ink, --crimson, --coral, --coral-dark, --mustard). Never hardcode hex colors in components.
+- Headings use Montserrat (800/900); body text uses DM Sans (400/500/700). Section headings are --crimson (the Gallery heading is --ink).
 - Button labels are lowercase on purpose (e.g. "check availability"). Never capitalize them.
 - No exclamation points in site copy.
 - Buttons: pill-shaped, coral background, dark text. Hover: slightly darker, scale 1.02.
-- Sections alternate cream / coral / black backgrounds, full width, with lots of vertical padding.
-- Text on coral or mustard backgrounds is always --ink.
+- Sections are mostly cream backgrounds, full width, with lots of vertical padding. The nav stays dark.
+- Text on cream, coral, or mustard backgrounds is always --ink.
 - Accessibility: real <button> and <a> elements, keyboard friendly, visible focus outline, alt text on every image, nothing that only works on hover, respect prefers-reduced-motion.
 - One component per section in src/components/. Keep lists (nav links, services, FAQ) in src/data/ files.
 - Make small, focused changes. Don't touch files unrelated to the request.
