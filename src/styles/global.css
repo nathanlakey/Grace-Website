@@ -1,0 +1,49 @@
+/* CSS reset */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+:root {
+	--cream: #F4EFE4;
+	--ink: #141414;
+	--coral: #EE7B6F;
+	--coral-dark: #D9655A;
+	--mustard: #D9A441;
+}
+
+body {
+	background-color: var(--cream);
+	color: var(--ink);
+	font-family: 'Inter', sans-serif;
+	line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'Fraunces', serif;
+	font-weight: 700;
+}
