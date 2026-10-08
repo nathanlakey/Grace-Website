@@ -91,7 +91,7 @@ import { services } from '../data/services';
 	}
 
 	.services-inner {
-		max-width: 72rem;
+		max-width: 1000px;
 		margin: 0 auto;
 	}
 
@@ -112,8 +112,7 @@ import { services } from '../data/services';
 		grid-template-columns: 1fr;
 		align-items: start;
 		gap: 1.5rem;
-		max-width: 1000px;
-		margin: 0 auto 3rem;
+		margin-bottom: 3rem;
 	}
 
 	.tile {
@@ -152,6 +151,16 @@ import { services } from '../data/services';
 		min-height: 3.25rem;
 		display: flex;
 		align-items: center;
+	}
+
+	@media (min-width: 901px) {
+		.tile-toggle {
+			min-height: 0;
+		}
+
+		.tile-title {
+			min-height: 0;
+		}
 	}
 
 	.tile-icon {
