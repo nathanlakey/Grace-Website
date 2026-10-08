@@ -1,0 +1,115 @@
+---
+import { Image } from 'astro:assets';
+import speakingPhoto from '../assets/photos/headshot-1.jpeg';
+
+// TODO: swap in the on-stage/microphone/white-blazer/Manheim-backdrop photo once it's added to src/assets/photos/
+// TODO: copy.md has no literal heading text for this section, only body copy — using "Keynote Speaking" (the label used for this topic elsewhere in copy.md)
+
+const topics = [
+	'My personal story',
+	'Risk-taking and entrepreneurship',
+	'Overcoming obstacles',
+	'Women in male-dominated industries',
+	'Nonprofit fundraising strategy',
+	'Branding and marketing',
+];
+---
+
+<section id="speaking" class="speaking">
+	<div class="speaking-grid">
+		<div class="speaking-content">
+			<h2>Keynote Speaking</h2>
+
+			<p>
+				At 27, a DNA test I took for fun revealed that my dad wasn't my biological father. Many
+				twists and turns later, that accidental discovery led me out of my stable corporate job,
+				into the auction world, and eventually to building my own businesses from scratch.
+			</p>
+
+			<p>
+				Now I tell that story from stages, and I tailor it to what your audience needs to hear:
+				taking the risk, rebuilding after trauma, betting on yourself, or breaking into an
+				industry where you're not who they expected.
+			</p>
+
+			<p>
+				Keynotes, breakout sessions, panels, luncheons. If your audience needs a reason to bet on
+				themselves, I have a few.
+			</p>
+
+			<ul class="topics">
+				{topics.map((topic) => (
+					<li class="topic">{topic}</li>
+				))}
+			</ul>
+
+			<a href="#book" class="button">bring me to your stage</a>
+		</div>
+
+		<div class="speaking-photo">
+			<Image src={speakingPhoto} alt="Grace Lakey" />
+		</div>
+	</div>
+</section>
+
+<style>
+	.speaking {
+		background-color: var(--ink);
+		color: var(--cream);
+		padding: 6rem 1.5rem;
+	}
+
+	.speaking-grid {
+		max-width: 72rem;
+		margin: 0 auto;
+		display: grid;
+		gap: 3rem;
+	}
+
+	.speaking-content h2 {
+		color: var(--cream);
+		font-size: clamp(2.25rem, 5vw, 4rem);
+		margin-bottom: 1.5rem;
+	}
+
+	.speaking-content p {
+		margin-bottom: 1.25rem;
+	}
+
+	.topics {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		list-style: none;
+		margin: 1.5rem 0 2rem;
+	}
+
+	.topic {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.4rem 1rem;
+		border: 1.5px solid var(--mustard);
+		border-radius: 999px;
+		color: var(--cream);
+		font-size: 0.85rem;
+		font-weight: 500;
+	}
+
+	.speaking-photo :global(img) {
+		width: 100%;
+		height: auto;
+		border-radius: 1rem;
+	}
+
+	@media (min-width: 901px) {
+		.speaking-grid {
+			grid-template-columns: 1fr 1fr;
+			align-items: center;
+			gap: 4rem;
+		}
+
+		.speaking-photo {
+			order: -1;
+		}
+	}
+</style>
