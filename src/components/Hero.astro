@@ -1,0 +1,141 @@
+---
+import { Image } from 'astro:assets';
+import heroPhoto from '../assets/photos/headshot-3.jpeg';
+
+// TODO: swap in the on-stage/microphone/white-blazer photo once it's added to src/assets/photos/
+---
+
+<section id="top" class="hero">
+	<Image src={heroPhoto} alt="Grace Lakey, benefit auctioneer and emcee" class="hero-photo" />
+	<div class="hero-overlay"></div>
+
+	<div class="hero-content">
+		<h1 class="headline">Polished. Powerful. Profitable.</h1>
+		<p class="subline">Add a little sparkle. Raise a lot of money.</p>
+		<p class="supporting">Benefit auctioneer, emcee, and fundraising strategist for galas and events nationwide.</p>
+
+		<div class="hero-actions">
+			<a href="#book" class="button">check availability</a>
+			<a href="#services" class="see-more">see how I work</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		min-height: 100svh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: var(--ink);
+		overflow: hidden;
+	}
+
+	.hero-photo {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.hero-overlay {
+		position: absolute;
+		inset: 0;
+		background-color: color-mix(in srgb, var(--ink) 70%, transparent);
+	}
+
+	.hero-content {
+		position: relative;
+		z-index: 1;
+		max-width: 48rem;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		text-align: center;
+	}
+
+	.headline {
+		font-size: clamp(2.5rem, 6vw, 5rem);
+		line-height: 1.1;
+		margin-bottom: 1.5rem;
+		background: linear-gradient(
+			120deg,
+			var(--mustard),
+			color-mix(in srgb, var(--mustard) 40%, var(--cream)) 50%,
+			var(--mustard)
+		);
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: var(--mustard);
+	}
+
+	.subline {
+		color: var(--cream);
+		font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+		margin-bottom: 0.75rem;
+	}
+
+	.supporting {
+		color: var(--cream);
+		font-size: 1.05rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.hero-actions {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.see-more {
+		color: var(--cream);
+		text-decoration: underline;
+		text-underline-offset: 0.25rem;
+	}
+
+	.see-more:hover {
+		color: var(--coral);
+	}
+
+	@media (max-width: 480px) {
+		.hero-actions {
+			flex-direction: column;
+			gap: 1.25rem;
+		}
+	}
+
+	@media (min-width: 901px) {
+		.hero {
+			justify-content: flex-start;
+		}
+
+		.hero-photo {
+			object-position: 75% center;
+		}
+
+		.hero-overlay {
+			background: linear-gradient(
+				to right,
+				color-mix(in srgb, var(--ink) 85%, transparent) 0%,
+				color-mix(in srgb, var(--ink) 55%, transparent) 50%,
+				color-mix(in srgb, var(--ink) 10%, transparent) 100%
+			);
+		}
+
+		.hero-content {
+			max-width: 32rem;
+			margin: 0;
+			margin-left: 6rem;
+			padding: 0;
+			text-align: left;
+		}
+
+		.hero-actions {
+			justify-content: flex-start;
+		}
+	}
+</style>
