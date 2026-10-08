@@ -3,6 +3,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout>
-	<h1>Grace Lakey</h1>
-	<p>This is a test paragraph to check the base styling for the site.</p>
+	<section id="top" class="placeholder bg-cream">
+		<h1>top</h1>
+	</section>
+	<section id="about" class="placeholder bg-coral">
+		<h1>about</h1>
+	</section>
+	<section id="services" class="placeholder bg-black">
+		<h1>services</h1>
+	</section>
+	<section id="speaking" class="placeholder bg-cream">
+		<h1>speaking</h1>
+	</section>
+	<section id="gallery" class="placeholder bg-coral">
+		<h1>gallery</h1>
+	</section>
+	<section id="faq" class="placeholder bg-black">
+		<h1>faq</h1>
+	</section>
+	<section id="book" class="placeholder bg-cream">
+		<h1>book</h1>
+	</section>
 </BaseLayout>
+
+<style>
+	.placeholder {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.bg-cream {
+		background-color: var(--cream);
+		color: var(--ink);
+	}
+
+	.bg-coral {
+		background-color: var(--coral);
+		color: var(--ink);
+	}
+
+	.bg-black {
+		background-color: var(--ink);
+		color: var(--cream);
+	}
+</style>
