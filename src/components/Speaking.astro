@@ -1,8 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import speakingPhoto from '../assets/photos/headshot-1.jpeg';
+import speakingPhoto from '../assets/photos/grace-stage-manheim-1.jpg';
 
-// TODO: swap in the on-stage/microphone/white-blazer/Manheim-backdrop photo once it's added to src/assets/photos/
 // TODO: copy.md has no literal heading text for this section, only body copy — using "Keynote Speaking" (the label used for this topic elsewhere in copy.md)
 
 const topics = [
@@ -47,7 +46,7 @@ const topics = [
 		</div>
 
 		<div class="speaking-photo">
-			<Image src={speakingPhoto} alt="Grace Lakey" />
+			<Image src={speakingPhoto} alt="Grace Lakey speaking into a microphone on stage at a Manheim Dallas event" />
 		</div>
 	</div>
 </section>
@@ -95,9 +94,17 @@ const topics = [
 		font-weight: 500;
 	}
 
+	.speaking-photo {
+		aspect-ratio: 4 / 5;
+		overflow: hidden;
+		border-radius: 1rem;
+	}
+
 	.speaking-photo :global(img) {
 		width: 100%;
-		height: auto;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 15%;
 		border-radius: 1rem;
 	}
 
