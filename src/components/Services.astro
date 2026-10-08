@@ -69,12 +69,7 @@ import { services } from '../data/services';
 
 	toggles.forEach((toggle) => {
 		toggle.addEventListener('click', () => {
-			const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-			if (isOpen) {
-				setPanelState(toggle, false);
-			} else {
-				activate(toggle);
-			}
+			activate(toggle);
 		});
 
 		toggle.addEventListener('mouseenter', () => {
@@ -215,14 +210,17 @@ import { services } from '../data/services';
 		overflow: hidden;
 		min-height: 0;
 		padding: 0 1.5rem 1.5rem;
+		visibility: hidden;
 		opacity: 0;
 		transform: translateY(8px);
-		transition: opacity 220ms ease, transform 220ms ease;
+		transition: opacity 220ms ease, transform 220ms ease, visibility 0s linear 220ms;
 	}
 
 	.tile-toggle[aria-expanded='true'] + .tile-panel-wrap .tile-panel {
+		visibility: visible;
 		opacity: 1;
 		transform: translateY(0);
+		transition: opacity 220ms ease, transform 220ms ease, visibility 0s linear 0s;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
