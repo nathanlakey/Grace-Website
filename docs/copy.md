@@ -16,6 +16,12 @@ GraceLakey
 
 AUCTIONEER & EMCEE WITH A FLAIR FOR STYLE, ENTERTAINMENT, & RAISING MONEY
 
+User-confirmed supporting Hero lines:
+
+Polished. Powerful. Profitable.
+
+Add a little sparkle. Raise a lot of money.
+
 ## About
 
 About

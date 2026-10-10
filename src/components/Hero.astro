@@ -11,8 +11,8 @@ import heroPhoto from '../assets/photos/hero-cutout.png';
 				<span>Lakey</span>
 			</h1>
 			<p class="tagline">Auctioneer &amp; emcee with a flair for style, entertainment, &amp; raising money</p>
-			<p class="small-line">Polished. Powerful. Profitable.</p>
-			<p class="small-line">Add a little sparkle. Raise a lot of money.</p>
+			<p class="statement-line">Polished. Powerful. Profitable.</p>
+			<p class="sparkle-line">Add a little sparkle. Raise a lot of money.</p>
 
 			<div class="hero-actions">
 				<a href="#book" class="button">check availability</a>
@@ -76,9 +76,29 @@ import heroPhoto from '../assets/photos/hero-cutout.png';
 		margin-bottom: 1rem;
 	}
 
-	.small-line {
+	.statement-line {
 		color: var(--ink);
-		font-size: 0.95rem;
+		font-family: 'Montserrat', sans-serif;
+		font-weight: 800;
+		font-size: 1.25rem;
+		line-height: 1.3;
+		margin-top: 1.75rem;
+		margin-bottom: 0.5rem;
+		width: fit-content;
+	}
+
+	.sparkle-line {
+		color: var(--ink);
+		font-family: 'DM Sans', sans-serif;
+		font-size: 1.15rem;
+		font-style: italic;
+		line-height: 1.5;
+	}
+
+	@media (min-width: 641px) {
+		.statement-line {
+			font-size: clamp(1.6rem, 2vw, 2rem);
+		}
 	}
 
 	.hero-actions {
