@@ -16,6 +16,8 @@ const { title = 'Grace Lakey', showNav = true } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
 		<title>{title}</title>
 		<slot name="head" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
