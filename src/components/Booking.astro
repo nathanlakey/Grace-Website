@@ -21,6 +21,11 @@ const step3Fields = bookingFields.filter((field) => field.step === 3);
 			<p class="step-indicator" id="step-indicator">Step 1 of 3</p>
 
 			<form class="booking-form" id="booking-form" novalidate>
+				<div class="honeypot-field" aria-hidden="true">
+					<label for="company_website">Leave this field blank</label>
+					<input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off" />
+				</div>
+
 				<div class="form-step" data-step="1">
 					<div class="form-grid">
 						{step1MainFields.map((field) => (
@@ -53,6 +58,8 @@ const step3Fields = bookingFields.filter((field) => field.step === 3);
 						))}
 					</div>
 
+					<p class="submit-error" id="submit-error" role="alert" data-backup-email={contactEmail}></p>
+
 					<div class="form-actions form-actions--split">
 						<button type="button" class="button button--ghost" id="step3-back">back</button>
 						<button type="button" class="button" id="step3-submit">submit</button>
@@ -69,8 +76,11 @@ const step3Fields = bookingFields.filter((field) => field.step === 3);
 </section>
 
 <script>
+	import { bookingFields } from '../data/bookingForm';
+
 	const TOTAL_STEPS = 3;
 	const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	const pageLoadedAt = Date.now();
 
 	const card = document.querySelector<HTMLElement>('.booking-card');
 	const stepIndicator = document.getElementById('step-indicator');
@@ -183,7 +193,105 @@ const step3Fields = bookingFields.filter((field) => field.step === 3);
 	document.getElementById('step2-back')?.addEventListener('click', () => goToStep(1));
 	document.getElementById('step2-next')?.addEventListener('click', () => goToStep(3));
 	document.getElementById('step3-back')?.addEventListener('click', () => goToStep(2));
-	// step3-submit intentionally has no handler yet
+
+	function buildPayload(): Record<string, unknown> {
+		const payload: Record<string, unknown> = {};
+
+		bookingFields.forEach((field) => {
+			if (field.type === 'checkboxes') {
+				payload[field.id] = Array.from(
+					document.querySelectorAll<HTMLInputElement>(`input[name="${field.id}"]:checked`)
+				).map((input) => input.value);
+			} else if (field.type === 'radio') {
+				const checked = document.querySelector<HTMLInputElement>(`input[name="${field.id}"]:checked`);
+				payload[field.id] = checked?.value ?? '';
+			} else if (field.type === 'checkbox') {
+				const input = document.getElementById(field.id) as HTMLInputElement | null;
+				payload[field.id] = Boolean(input?.checked);
+			} else {
+				const el = document.getElementById(field.id) as
+					| HTMLInputElement
+					| HTMLSelectElement
+					| HTMLTextAreaElement
+					| null;
+				payload[field.id] = el?.value ?? '';
+			}
+		});
+
+		const honeypot = document.getElementById('company_website') as HTMLInputElement | null;
+		payload.company_website = honeypot?.value ?? '';
+		payload.page_loaded_at = pageLoadedAt;
+
+		return payload;
+	}
+
+	const submitErrorEl = document.getElementById('submit-error');
+	const backupEmail = submitErrorEl?.dataset.backupEmail ?? '';
+
+	function clearSubmitError() {
+		if (!submitErrorEl) return;
+		submitErrorEl.textContent = '';
+		submitErrorEl.classList.remove('is-visible');
+	}
+
+	function showSubmitError() {
+		if (!submitErrorEl) return;
+		submitErrorEl.textContent = '';
+		submitErrorEl.append(
+			`Something went wrong sending your inquiry. Please try again, or email `,
+			(() => {
+				const link = document.createElement('a');
+				link.href = `mailto:${backupEmail}`;
+				link.textContent = backupEmail;
+				return link;
+			})(),
+			' directly.'
+		);
+		submitErrorEl.classList.add('is-visible');
+	}
+
+	function showSuccess() {
+		if (!card) return;
+		card.innerHTML = '';
+		const message = document.createElement('p');
+		message.className = 'success-message';
+		message.textContent = "Got it. I'll be in touch within 2 business days.";
+		card.append(message);
+	}
+
+	const submitButton = document.getElementById('step3-submit') as HTMLButtonElement | null;
+	const step3BackButton = document.getElementById('step3-back') as HTMLButtonElement | null;
+
+	submitButton?.addEventListener('click', async () => {
+		clearSubmitError();
+		submitButton.disabled = true;
+		if (step3BackButton) step3BackButton.disabled = true;
+		const originalText = submitButton.textContent;
+		submitButton.textContent = 'sending...';
+
+		try {
+			const response = await fetch('/api/booking', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(buildPayload()),
+			});
+
+			const data = await response.json().catch(() => null);
+
+			if (response.ok && data?.ok) {
+				showSuccess();
+				return;
+			}
+
+			showSubmitError();
+		} catch {
+			showSubmitError();
+		}
+
+		submitButton.disabled = false;
+		if (step3BackButton) step3BackButton.disabled = false;
+		submitButton.textContent = originalText ?? 'submit';
+	});
 
 	// date_flexible disables event_date while checked, and clears its value
 	const controllers = document.querySelectorAll<HTMLInputElement>('[data-controls]');
@@ -227,6 +335,41 @@ const step3Fields = bookingFields.filter((field) => field.step === 3);
 		padding: 2rem 1.5rem;
 		box-shadow: 0 4px 24px color-mix(in srgb, var(--ink) 10%, transparent);
 		scroll-margin-top: calc(var(--nav-height) + 1rem);
+	}
+
+	.honeypot-field {
+		position: absolute;
+		left: -9999px;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+	}
+
+	.submit-error {
+		display: none;
+		color: var(--crimson);
+		font-size: 0.9rem;
+		font-weight: 500;
+		margin-bottom: 1.5rem;
+	}
+
+	.submit-error.is-visible {
+		display: block;
+	}
+
+	.submit-error :global(a) {
+		color: var(--crimson);
+		text-decoration: underline;
+		text-underline-offset: 0.25rem;
+	}
+
+	.success-message {
+		font-family: 'Montserrat', sans-serif;
+		font-weight: 800;
+		font-size: 1.35rem;
+		color: var(--crimson);
+		text-align: center;
+		padding: 2rem 0;
 	}
 
 	.step-indicator {
