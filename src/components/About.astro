@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import aboutPhoto from '../assets/photos/headshot-6.jpeg';
+import aboutPhoto from '../assets/photos/headshot-3.jpeg';
 import logoCoral from '../assets/brand/logo-coral.svg';
 import { credentials } from '../data/credentials';
 import Confetti from './Confetti.astro';
@@ -8,13 +8,15 @@ import Confetti from './Confetti.astro';
 
 <section id="about" class="about">
 	<div class="about-grid">
-		<div class="photo-frame">
-			<Image src={aboutPhoto} alt="Grace Lakey standing in a black suit against a light wall" />
+		<div class="about-visual">
+			<img src={logoCoral.src} alt="" class="section-seal" />
+			<h2>About</h2>
+			<div class="photo-frame">
+				<Image src={aboutPhoto} alt="Grace Lakey sitting in a tan chair wearing a polka-dot top and olive skirt" />
+			</div>
 		</div>
 
 		<div class="about-content">
-			<img src={logoCoral.src} alt="" class="section-seal" />
-			<h2>About</h2>
 			<Confetti position="top-right" size="7rem" rotation={-8} />
 
 			<p>
@@ -28,8 +30,8 @@ import Confetti from './Confetti.astro';
 				Grace's work goes way beyond her <em>mad cool</em> bid calling skills. She consults with
 				fundraising committees on strategy, emcees events that keep people in their seats (or
 				jumping to their feet in a good way), and brings the kind of energy that turns a quiet
-				ballroom into a crowd eager to participate. When you see her tagline, "Add a little
-				sparkle, raise a lot of money," know that she means every word. And yes, she can sing,
+				ballroom into a crowd eager to participate. When you see her tagline, "<strong class="tagline">Add a little
+				sparkle, raise a lot of money</strong>," know that she means every word. And yes, she can sing,
 				too.
 			</p>
 
@@ -77,25 +79,33 @@ import Confetti from './Confetti.astro';
 		position: relative;
 	}
 
-	.about-content h2 {
+	.about-visual h2 {
 		color: var(--crimson);
 		font-size: clamp(2.25rem, 5vw, 4rem);
 		margin-bottom: 2rem;
 	}
 
-	.photo-frame {
+	.about-visual {
 		max-width: 24rem;
 		margin: 0 auto;
-		padding: 1.5rem;
+		width: 100%;
+	}
+
+	.photo-frame {
+		aspect-ratio: 4 / 5;
 		background-color: var(--mustard);
 	}
 
 	.photo-frame :global(img) {
 		width: 100%;
-		height: auto;
-		aspect-ratio: 4 / 5;
+		height: 100%;
 		object-fit: cover;
-		object-position: center 15%;
+		object-position: center;
+	}
+
+	.tagline {
+		color: var(--crimson);
+		font-weight: 700;
 	}
 
 	.about-content p {
@@ -143,7 +153,7 @@ import Confetti from './Confetti.astro';
 			gap: 2.5rem;
 		}
 
-		.photo-frame {
+		.about-visual {
 			margin: 0;
 			max-width: none;
 			width: 100%;
