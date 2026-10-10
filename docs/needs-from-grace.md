@@ -4,6 +4,7 @@
 - [ ] Desk photo with crimson background, exported from Canva
 - [ ] Headshot with yellow background, exported from Canva
 - [ ] Cutout photos on colored blocks (hero, About), exported from Canva as PNGs
+- [ ] Gold glitter graphic from Canva, exported as transparent PNG (for an exact match)
 - [ ] Social profile URLs: Instagram, TikTok, Facebook, LinkedIn, Whatnot
 - [ ] "Shop my looks" affiliate storefront URL
 - [ ] "Learn to auctioneer" auction school URL

@@ -1,4 +1,6 @@
 ---
+import { randomUUID } from 'node:crypto';
+
 // Decorative gold accents: corner clusters or a flowing diagonal sweep.
 export interface Props {
 	position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -10,31 +12,53 @@ export interface Props {
 
 const { position = 'top-right', size = '8rem', rotation = 0, showOnMobile = false, variant = 'corner' } = Astro.props;
 
-const GOLD_TONES = ['var(--gold-1)', 'var(--gold-2)', 'var(--gold-3)', 'var(--gold-4)'];
-const VIEWBOX = 160;
-const DOT_COUNT = variant === 'sweep' ? 60 : 40;
+const isSweep = variant === 'sweep';
+const width = isSweep ? 500 : 160;
+const height = isSweep ? 180 : 160;
+const DOT_COUNT = isSweep ? 70 : 40;
+let seed = isSweep ? 20261010 : 20261011;
 
-const dots = Array.from({ length: DOT_COUNT }, (_, index) => {
-	// bias toward the corner so the cluster thins out as it sweeps across the diagonal
-	const along = Math.pow(Math.random(), 0.6) * VIEWBOX;
-	const jitter = (Math.random() - 0.5) * VIEWBOX * 0.5;
-	const x = Math.min(VIEWBOX, Math.max(0, along + jitter * 0.7));
-	const y = Math.min(VIEWBOX, Math.max(0, along - jitter * 0.7));
-	const radius = 1 + Math.random() * 6; // 2px-14px diameter
-	const opacity = 0.35 + Math.random() * 0.65; // some dots semi-transparent
-	const fill = GOLD_TONES[Math.floor(Math.random() * GOLD_TONES.length)];
-	if (variant === 'sweep') {
-		const t = index / (DOT_COUNT - 1);
-		const spread = 8 + 16 * Math.sin(Math.PI * t);
-		return {
-			x: 16 + 468 * t + (Math.random() - 0.5) * spread,
-			y: 150 - 126 * t + 20 * Math.sin(Math.PI * t) + (Math.random() - 0.5) * spread,
-			radius,
-			opacity,
-			fill,
-		};
-	}
-	return { x, y, radius, opacity, fill };
+function random() {
+	seed = (Math.imul(1664525, seed) + 1013904223) >>> 0;
+	return seed / 4294967296;
+}
+
+// Unique SVG references are independent of the seeded glitter pattern.
+const gradientPrefix = `glitter-${randomUUID()}`;
+const gradients = [
+	['var(--gold-highlight)', 'var(--gold-2)', 'var(--gold-foil)', 'var(--gold-edge)'],
+	['var(--gold-highlight)', 'var(--gold-4)', 'var(--gold-1)', 'var(--gold-edge)'],
+	['var(--gold-4)', 'var(--gold-2)', 'var(--gold-foil)', 'var(--gold-bronze-edge)'],
+	['var(--gold-3)', 'var(--gold-3)', 'var(--gold-edge)', 'var(--gold-bronze-edge)'],
+];
+const [start, control1, control2, end] = isSweep
+	? [{ x: 16, y: 150 }, { x: 180, y: 175 }, { x: 280, y: 8 }, { x: 484, y: 24 }]
+	: [{ x: 12, y: 12 }, { x: 80, y: 20 }, { x: 55, y: 110 }, { x: 148, y: 148 }];
+
+const dots = Array.from({ length: DOT_COUNT }, () => {
+	const sizeRoll = random();
+	const radius = sizeRoll < 0.12 ? 1 + random()
+		: sizeRoll < 0.78 ? 2 + random() * 3
+		: sizeRoll < 0.94 ? 5 + random() * 4
+		: 9 + random() * 3;
+	// Averaging concentrates the sweep toward its middle and away from the edges.
+	const t = isSweep ? (random() + random()) / 2 : Math.pow(random(), 1.5);
+	const u = 1 - t;
+	const x = u ** 3 * start.x + 3 * u ** 2 * t * control1.x + 3 * u * t ** 2 * control2.x + t ** 3 * end.x;
+	const y = u ** 3 * start.y + 3 * u ** 2 * t * control1.y + 3 * u * t ** 2 * control2.y + t ** 3 * end.y;
+	const dx = 3 * u ** 2 * (control1.x - start.x) + 6 * u * t * (control2.x - control1.x) + 3 * t ** 2 * (end.x - control2.x);
+	const dy = 3 * u ** 2 * (control1.y - start.y) + 6 * u * t * (control2.y - control1.y) + 3 * t ** 2 * (end.y - control2.y);
+	const length = Math.hypot(dx, dy);
+	const spread = radius <= 5 ? 48 : radius < 9 ? 20 : 8;
+	const offset = (random() + random() + random() - 1.5) / 1.5 * spread;
+	const opacity = radius <= 5 && random() < 0.25 ? 0.4 + random() * 0.3 : 0.85 + random() * 0.15;
+	return {
+		x: Math.min(width - radius, Math.max(radius, x - dy / length * offset)),
+		y: Math.min(height - radius, Math.max(radius, y + dx / length * offset)),
+		radius,
+		opacity,
+		fill: `url(#${gradientPrefix}-${Math.floor(random() * gradients.length)})`,
+	};
 });
 ---
 
@@ -43,7 +67,16 @@ const dots = Array.from({ length: DOT_COUNT }, (_, index) => {
 	style={`--confetti-size: ${size}; --confetti-rotation: ${rotation}deg;`}
 	aria-hidden="true"
 >
-	<svg viewBox={variant === 'sweep' ? '0 0 500 180' : `0 0 ${VIEWBOX} ${VIEWBOX}`} xmlns="http://www.w3.org/2000/svg" focusable="false">
+	<svg viewBox={`0 0 ${width} ${height}`} xmlns="http://www.w3.org/2000/svg" focusable="false">
+		<defs>
+			{gradients.map((colors, index) => (
+				<radialGradient id={`${gradientPrefix}-${index}`} cx="35%" cy="35%" r="70%" fx="30%" fy="30%">
+					{colors.map((color, stop) => (
+						<stop offset={['0%', '30%', '65%', '100%'][stop]} stop-color={color} />
+					))}
+				</radialGradient>
+			))}
+		</defs>
 		{dots.map((dot) => (
 			<circle cx={dot.x} cy={dot.y} r={dot.radius} fill={dot.fill} opacity={dot.opacity} />
 		))}
@@ -56,7 +89,7 @@ const dots = Array.from({ length: DOT_COUNT }, (_, index) => {
 		width: var(--confetti-size);
 		height: var(--confetti-size);
 		pointer-events: none;
-		z-index: 1;
+		z-index: 0;
 	}
 
 	.confetti svg {
