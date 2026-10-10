@@ -5,9 +5,10 @@ export interface Props {
 	position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 	size?: string;
 	rotation?: number;
+	showOnMobile?: boolean;
 }
 
-const { position = 'top-right', size = '8rem', rotation = 0 } = Astro.props;
+const { position = 'top-right', size = '8rem', rotation = 0, showOnMobile = false } = Astro.props;
 
 const GOLD_TONES = ['var(--gold-1)', 'var(--gold-2)', 'var(--gold-3)', 'var(--gold-4)'];
 const VIEWBOX = 160;
@@ -27,7 +28,7 @@ const dots = Array.from({ length: DOT_COUNT }, () => {
 ---
 
 <div
-	class={`confetti confetti--${position}`}
+	class:list={['confetti', `confetti--${position}`, { 'confetti--mobile': showOnMobile }]}
 	style={`--confetti-size: ${size}; --confetti-rotation: ${rotation}deg;`}
 	aria-hidden="true"
 >
@@ -78,7 +79,7 @@ const dots = Array.from({ length: DOT_COUNT }, () => {
 	}
 
 	@media (max-width: 600px) {
-		.confetti {
+		.confetti:not(.confetti--mobile) {
 			display: none;
 		}
 	}

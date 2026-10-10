@@ -130,3 +130,23 @@ Terms & Support
 Privacy Policy
 
 [Designed with Canva](https://www.canva.com/)
+
+## Bio Links Page
+
+User-provided copy for the hidden Instagram and TikTok bio page:
+
+Grace Lakey
+
+Add a little sparkle. Raise a lot of money.
+
+book grace for your event
+
+shop my looks
+
+watch me live
+
+my story
+
+bring me to your stage
+
+learn to auctioneer

@@ -11,3 +11,4 @@
 - Accessibility: real <button> and <a> elements, keyboard friendly, visible focus outline, alt text on every image, nothing that only works on hover, respect prefers-reduced-motion.
 - One component per section in src/components/. Keep lists (nav links, services, FAQ) in src/data/ files.
 - Make small, focused changes. Don't touch files unrelated to the request.
+- After finishing every request, commit all changes with a short descriptive message and push to main.

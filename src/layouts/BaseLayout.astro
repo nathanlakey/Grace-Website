@@ -4,9 +4,10 @@ import Nav from '../components/Nav.astro';
 
 interface Props {
 	title?: string;
+	showNav?: boolean;
 }
 
-const { title = 'Grace Lakey' } = Astro.props;
+const { title = 'Grace Lakey', showNav = true } = Astro.props;
 ---
 
 <html lang="en">
@@ -16,6 +17,7 @@ const { title = 'Grace Lakey' } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<slot name="head" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -24,7 +26,7 @@ const { title = 'Grace Lakey' } = Astro.props;
 		/>
 	</head>
 	<body>
-		<Nav />
+		{showNav && <Nav />}
 		<slot />
 	</body>
 </html>

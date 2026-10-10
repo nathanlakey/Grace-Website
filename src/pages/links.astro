@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Confetti from '../components/Confetti.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { Image } from 'astro:assets';
+import gracePhoto from '../assets/photos/headshot-6.jpeg';
+import { links } from '../data/links';
+---
+
+<BaseLayout showNav={false}>
+	<meta slot="head" name="robots" content="noindex" />
+	<main class="links-page">
+		<Confetti position="top-left" size="5rem" rotation={-6} showOnMobile />
+		<Confetti position="bottom-right" size="5rem" rotation={8} showOnMobile />
+
+		<div class="links-inner">
+			<Image
+				src={gracePhoto}
+				alt="Grace Lakey standing in a black suit with feathered cuffs"
+				class="links-photo"
+				widths={[240, 360, 480, 600]}
+				sizes="(max-width: 500px) 60vw, 300px"
+				loading="eager"
+			/>
+			<h1>Grace Lakey</h1>
+			<p class="tagline">Add a little sparkle. Raise a lot of money.</p>
+
+			<ul class="bio-links">
+				{links.map((link) => (
+					<li>
+						<a
+							class="button"
+							href={link.url}
+							target={link.newTab ? '_blank' : undefined}
+							rel={link.newTab ? 'noopener noreferrer' : undefined}
+						>
+							{link.label}
+						</a>
+					</li>
+				))}
+			</ul>
+
+			<SocialLinks align="center" />
+		</div>
+	</main>
+</BaseLayout>
+
+<style>
+	.links-page {
+		position: relative;
+		min-height: 100svh;
+		overflow: hidden;
+		background-color: var(--cream);
+		color: var(--ink);
+		padding: 2rem 1.5rem 3rem;
+	}
+
+	.links-inner {
+		position: relative;
+		z-index: 2;
+		max-width: 30rem;
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.links-photo {
+		width: min(60vw, 18.75rem);
+		max-width: 100%;
+		height: auto;
+		margin: 0 auto 1.5rem;
+		border-radius: 1rem;
+	}
+
+	h1 {
+		color: var(--crimson);
+		font-size: clamp(2rem, 8vw, 3rem);
+		margin-bottom: 0.75rem;
+	}
+
+	.tagline {
+		margin-bottom: 2rem;
+	}
+
+	.bio-links {
+		display: grid;
+		gap: 0.875rem;
+		list-style: none;
+		margin-bottom: 2rem;
+	}
+
+	.bio-links .button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		min-height: 3.25rem;
+	}
+
+	.bio-links .button:focus-visible {
+		outline: 3px solid var(--crimson);
+		outline-offset: 3px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.bio-links .button:hover {
+			transform: none;
+		}
+	}
+</style>
