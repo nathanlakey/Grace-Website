@@ -1,12 +1,12 @@
 ---
 import { navLinks } from '../data/nav';
-import logoCream from '../assets/brand/logo-cream.svg';
+import logoCoral from '../assets/brand/logo-coral.svg';
 ---
 
 <header class="nav">
 	<div class="nav-inner">
 		<a href="#top" class="logo" aria-label="Grace Lakey, back to top">
-			<img src={logoCream.src} alt="Grace Lakey logo" />
+			<img src={logoCoral.src} alt="Grace Lakey logo" />
 		</a>
 
 		<button
@@ -38,7 +38,7 @@ import logoCream from '../assets/brand/logo-cream.svg';
 		top: 0;
 		z-index: 100;
 		height: var(--nav-height);
-		background-color: color-mix(in srgb, var(--ink) 95%, transparent);
+		background-color: color-mix(in srgb, var(--cream) 95%, transparent);
 		backdrop-filter: blur(8px);
 	}
 
@@ -55,13 +55,14 @@ import logoCream from '../assets/brand/logo-cream.svg';
 	.logo img {
 		display: block;
 		height: 52px;
-		width: auto;
+		width: 52px;
+		object-fit: contain;
 	}
 
-	@media (min-width: 768px) {
-		.logo img {
-			height: 60px;
-		}
+	.nav a:focus-visible,
+	.menu-toggle:focus-visible {
+		outline: 3px solid var(--crimson);
+		outline-offset: 4px;
 	}
 
 	.menu-toggle {
@@ -78,7 +79,7 @@ import logoCream from '../assets/brand/logo-cream.svg';
 		display: block;
 		width: 24px;
 		height: 2px;
-		background-color: var(--cream);
+		background-color: var(--ink);
 	}
 
 	.nav-menu {
@@ -95,7 +96,7 @@ import logoCream from '../assets/brand/logo-cream.svg';
 	}
 
 	.nav-links a {
-		color: var(--cream);
+		color: var(--ink);
 		text-decoration: none;
 	}
 
@@ -117,7 +118,8 @@ import logoCream from '../assets/brand/logo-cream.svg';
 			flex-direction: column;
 			align-items: flex-start;
 			gap: 1.5rem;
-			background-color: var(--ink);
+			background-color: color-mix(in srgb, var(--cream) 95%, transparent);
+			backdrop-filter: blur(8px);
 			padding: 1.5rem;
 		}
 

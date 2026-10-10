@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import aboutPhoto from '../assets/photos/headshot-6.jpeg';
+import logoCoral from '../assets/brand/logo-coral.svg';
 import { credentials } from '../data/credentials';
 import Confetti from './Confetti.astro';
 ---
@@ -12,6 +13,7 @@ import Confetti from './Confetti.astro';
 		</div>
 
 		<div class="about-content">
+			<img src={logoCoral.src} alt="" class="section-seal" />
 			<h2>About</h2>
 			<Confetti position="top-right" size="7rem" rotation={-8} />
 

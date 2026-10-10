@@ -6,7 +6,7 @@
 - Action buttons and calls to action (like 'check availability', 'next', 'submit') use lowercase labels. Titles, headings, service names and FAQ questions use normal capitalization.
 - No exclamation points in site copy.
 - Buttons: pill-shaped, coral background, dark text. Hover: slightly darker, scale 1.02.
-- Sections are mostly cream backgrounds, full width, with lots of vertical padding. The nav stays dark.
+- Sections are mostly cream backgrounds, full width, with lots of vertical padding. The nav uses --cream at 95% opacity with blur, --ink links, and a coral logo seal without a background circle.
 - Text on cream, coral, or mustard backgrounds is always --ink.
 - Accessibility: real <button> and <a> elements, keyboard friendly, visible focus outline, alt text on every image, nothing that only works on hover, respect prefers-reduced-motion.
 - One component per section in src/components/. Keep lists (nav links, services, FAQ) in src/data/ files.

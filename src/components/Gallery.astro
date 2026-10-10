@@ -1,11 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 import { galleryPhotos } from '../data/gallery';
+import logoCoral from '../assets/brand/logo-coral.svg';
 import Confetti from './Confetti.astro';
 ---
 
 <section id="gallery" class="gallery">
 	<div class="gallery-inner">
+		<img src={logoCoral.src} alt="" class="section-seal" />
 		<h2>Gallery</h2>
 		<Confetti position="top-right" size="6rem" rotation={-4} />
 

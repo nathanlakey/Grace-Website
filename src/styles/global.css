@@ -49,10 +49,18 @@ section[id] {
 }
 
 body {
+	overflow-x: clip;
 	background-color: var(--cream);
 	color: var(--ink);
 	font-family: 'DM Sans', sans-serif;
 	line-height: 1.6;
+}
+
+.section-seal {
+	width: 48px;
+	height: 48px;
+	object-fit: contain;
+	margin-bottom: 1rem;
 }
 
 h1,
