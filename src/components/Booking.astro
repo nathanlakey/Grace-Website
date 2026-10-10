@@ -1,12 +1,16 @@
 ---
+import BookingField from './BookingField.astro';
 import { bookingFields } from '../data/bookingForm';
 import { contactEmail } from '../data/site';
 
-const stepFields = bookingFields.filter((field) => field.step === 1);
+const step1Fields = bookingFields.filter((field) => field.step === 1);
 const checkboxControllers = new Map(
-	stepFields.filter((field) => field.controlsFieldId).map((field) => [field.controlsFieldId, field])
+	step1Fields.filter((field) => field.controlsFieldId).map((field) => [field.controlsFieldId, field])
 );
-const mainFields = stepFields.filter((field) => !field.controlsFieldId);
+const step1MainFields = step1Fields.filter((field) => !field.controlsFieldId);
+
+const step2Fields = bookingFields.filter((field) => field.step === 2);
+const step3Fields = bookingFields.filter((field) => field.step === 3);
 ---
 
 <section id="book" class="booking">
@@ -14,63 +18,45 @@ const mainFields = stepFields.filter((field) => !field.controlsFieldId);
 		<h2>Check availability</h2>
 
 		<div class="booking-card">
-			<p class="step-indicator">Step 1 of 3</p>
+			<p class="step-indicator" id="step-indicator">Step 1 of 3</p>
 
-			<form class="booking-form" novalidate>
-				<div class="form-grid">
-					{mainFields.map((field) => {
-						const pairedCheckbox = checkboxControllers.get(field.id);
+			<form class="booking-form" id="booking-form" novalidate>
+				<div class="form-step" data-step="1">
+					<div class="form-grid">
+						{step1MainFields.map((field) => (
+							<BookingField field={field} pairedCheckbox={checkboxControllers.get(field.id)} />
+						))}
+					</div>
 
-						if (field.type === 'checkboxes') {
-							return (
-								<fieldset class={`form-field field--${field.width ?? 'half'}`}>
-									<legend>
-										{field.label}
-										{field.required && <span class="required-mark" aria-hidden="true"> *</span>}
-									</legend>
-									<div class="checkbox-grid">
-										{field.options?.map((option) => (
-											<label class="checkbox-row">
-												<input type="checkbox" name={field.id} value={option.id} />
-												{option.label}
-											</label>
-										))}
-									</div>
-								</fieldset>
-							);
-						}
-
-						return (
-							<div class={`form-field field--${field.width ?? 'half'}`}>
-								<label for={field.id}>
-									{field.label}
-									{field.required && <span class="required-mark" aria-hidden="true"> *</span>}
-								</label>
-								<input
-									type={field.type}
-									id={field.id}
-									name={field.id}
-									required={field.required}
-								/>
-
-								{pairedCheckbox && (
-									<label class="checkbox-row checkbox-row--inline">
-										<input
-											type="checkbox"
-											id={pairedCheckbox.id}
-											name={pairedCheckbox.id}
-											data-controls={pairedCheckbox.controlsFieldId}
-										/>
-										{pairedCheckbox.label}
-									</label>
-								)}
-							</div>
-						);
-					})}
+					<div class="form-actions">
+						<button type="button" class="button" id="step1-next">next</button>
+					</div>
 				</div>
 
-				<div class="form-actions">
-					<button type="button" class="button">next</button>
+				<div class="form-step" data-step="2" hidden>
+					<div class="form-grid">
+						{step2Fields.map((field) => (
+							<BookingField field={field} />
+						))}
+					</div>
+
+					<div class="form-actions form-actions--split">
+						<button type="button" class="button button--ghost" id="step2-back">back</button>
+						<button type="button" class="button" id="step2-next">next</button>
+					</div>
+				</div>
+
+				<div class="form-step" data-step="3" hidden>
+					<div class="form-grid">
+						{step3Fields.map((field) => (
+							<BookingField field={field} />
+						))}
+					</div>
+
+					<div class="form-actions form-actions--split">
+						<button type="button" class="button button--ghost" id="step3-back">back</button>
+						<button type="button" class="button" id="step3-submit">submit</button>
+					</div>
 				</div>
 			</form>
 		</div>
@@ -83,8 +69,124 @@ const mainFields = stepFields.filter((field) => !field.controlsFieldId);
 </section>
 
 <script>
-	const controllers = document.querySelectorAll<HTMLInputElement>('[data-controls]');
+	const TOTAL_STEPS = 3;
+	const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+	const card = document.querySelector<HTMLElement>('.booking-card');
+	const stepIndicator = document.getElementById('step-indicator');
+	const steps = Array.from(document.querySelectorAll<HTMLElement>('.form-step'));
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	function clearError(fieldId: string) {
+		const errorEl = document.getElementById(`${fieldId}-error`);
+		if (errorEl) errorEl.textContent = '';
+		errorEl?.classList.remove('is-visible');
+
+		document.getElementById(fieldId)?.removeAttribute('aria-invalid');
+		document.getElementById(`${fieldId}-group`)?.removeAttribute('aria-invalid');
+	}
+
+	function showError(fieldId: string, message: string) {
+		const errorEl = document.getElementById(`${fieldId}-error`);
+		if (errorEl) {
+			errorEl.textContent = message;
+			errorEl.classList.add('is-visible');
+		}
+
+		document.getElementById(fieldId)?.setAttribute('aria-invalid', 'true');
+		document.getElementById(`${fieldId}-group`)?.setAttribute('aria-invalid', 'true');
+	}
+
+	function validateStep1() {
+		let valid = true;
+		['name', 'email', 'organization', 'services'].forEach(clearError);
+
+		const name = document.getElementById('name') as HTMLInputElement | null;
+		if (!name?.value.trim()) {
+			showError('name', 'Please enter your name.');
+			valid = false;
+		}
+
+		const email = document.getElementById('email') as HTMLInputElement | null;
+		if (!email?.value.trim()) {
+			showError('email', 'Please enter your email.');
+			valid = false;
+		} else if (!EMAIL_PATTERN.test(email.value.trim())) {
+			showError('email', 'Please enter a valid email address.');
+			valid = false;
+		}
+
+		const organization = document.getElementById('organization') as HTMLInputElement | null;
+		if (!organization?.value.trim()) {
+			showError('organization', 'Please enter your organization.');
+			valid = false;
+		}
+
+		const anyService = document.querySelector('input[name="services"]:checked');
+		if (!anyService) {
+			showError('services', 'Please select at least one service.');
+			valid = false;
+		}
+
+		return valid;
+	}
+
+	function getSelectedServices() {
+		return new Set(
+			Array.from(document.querySelectorAll<HTMLInputElement>('input[name="services"]:checked')).map(
+				(input) => input.value
+			)
+		);
+	}
+
+	function updateStep2Visibility() {
+		const selected = getSelectedServices();
+
+		document.querySelectorAll<HTMLElement>('[data-step="2"][data-services]').forEach((el) => {
+			const services = el.dataset.services?.split(',') ?? [];
+			el.hidden = !services.some((service) => selected.has(service));
+		});
+	}
+
+	function focusFirstField(stepEl: HTMLElement) {
+		const candidates = stepEl.querySelectorAll<HTMLElement>('input, select, textarea');
+		for (const candidate of Array.from(candidates)) {
+			if (candidate.offsetParent !== null) {
+				candidate.focus();
+				return;
+			}
+		}
+	}
+
+	function goToStep(step: number) {
+		steps.forEach((stepEl) => {
+			stepEl.hidden = Number(stepEl.dataset.step) !== step;
+		});
+
+		if (stepIndicator) stepIndicator.textContent = `Step ${step} of ${TOTAL_STEPS}`;
+
+		if (step === 2) updateStep2Visibility();
+
+		card?.scrollIntoView({
+			behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+			block: 'start',
+		});
+
+		const activeStep = steps.find((stepEl) => Number(stepEl.dataset.step) === step);
+		if (activeStep) focusFirstField(activeStep);
+	}
+
+	document.getElementById('step1-next')?.addEventListener('click', () => {
+		if (validateStep1()) goToStep(2);
+	});
+
+	document.getElementById('step2-back')?.addEventListener('click', () => goToStep(1));
+	document.getElementById('step2-next')?.addEventListener('click', () => goToStep(3));
+	document.getElementById('step3-back')?.addEventListener('click', () => goToStep(2));
+	// step3-submit intentionally has no handler yet
+
+	// date_flexible disables event_date while checked, and clears its value
+	const controllers = document.querySelectorAll<HTMLInputElement>('[data-controls]');
 	controllers.forEach((controller) => {
 		const targetId = controller.dataset.controls;
 		const target = targetId ? document.getElementById(targetId) : null;
@@ -124,6 +226,7 @@ const mainFields = stepFields.filter((field) => !field.controlsFieldId);
 		border-radius: 1rem;
 		padding: 2rem 1.5rem;
 		box-shadow: 0 4px 24px color-mix(in srgb, var(--ink) 10%, transparent);
+		scroll-margin-top: calc(var(--nav-height) + 1rem);
 	}
 
 	.step-indicator {
@@ -139,85 +242,24 @@ const mainFields = stepFields.filter((field) => !field.controlsFieldId);
 		margin-bottom: 2rem;
 	}
 
-	.form-field {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		border: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.form-field label,
-	.form-field legend {
-		font-weight: 700;
-		font-size: 0.95rem;
-	}
-
-	.required-mark {
-		color: var(--crimson);
-	}
-
-	.form-field input[type='text'],
-	.form-field input[type='email'],
-	.form-field input[type='tel'],
-	.form-field input[type='date'] {
-		width: 100%;
-		padding: 0.75rem 1rem;
-		border-radius: 999px;
-		border: 1.5px solid color-mix(in srgb, var(--ink) 25%, transparent);
-		background-color: var(--cream);
-		color: var(--ink);
-	}
-
-	.form-field input:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.form-field input:focus-visible {
-		outline: 3px solid var(--coral);
-		outline-offset: 2px;
-	}
-
-	.checkbox-row {
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-		font-weight: 500;
-		cursor: pointer;
-	}
-
-	.checkbox-row--inline {
-		margin-top: 0.25rem;
-		font-size: 0.9rem;
-	}
-
-	.checkbox-row input {
-		width: 1.1rem;
-		height: 1.1rem;
-		accent-color: var(--coral);
-		flex-shrink: 0;
-	}
-
-	.checkbox-row input:focus-visible {
-		outline: 3px solid var(--coral);
-		outline-offset: 2px;
-	}
-
-	.checkbox-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 0.75rem;
-	}
-
-	.field--full {
-		grid-column: 1 / -1;
-	}
-
 	.form-actions {
 		display: flex;
 		justify-content: flex-end;
+		gap: 1rem;
+	}
+
+	.form-actions--split {
+		justify-content: space-between;
+	}
+
+	.button--ghost {
+		background-color: transparent;
+		color: var(--crimson);
+		border: 1.5px solid var(--crimson);
+	}
+
+	.button--ghost:hover {
+		background-color: color-mix(in srgb, var(--crimson) 10%, transparent);
 	}
 
 	.general-inquiries {
@@ -234,10 +276,6 @@ const mainFields = stepFields.filter((field) => !field.controlsFieldId);
 
 	@media (min-width: 641px) {
 		.form-grid {
-			grid-template-columns: 1fr 1fr;
-		}
-
-		.checkbox-grid {
 			grid-template-columns: 1fr 1fr;
 		}
 	}
