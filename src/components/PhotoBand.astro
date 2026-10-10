@@ -10,32 +10,41 @@ import logoSeal from '../assets/brand/logo-coral.svg';
 		alt="Grace Lakey smiling in a black blazer with a polka-dot top"
 		class="band-photo"
 		widths={[640, 1024, 1600, 2048]}
-		sizes="100vw"
+		sizes={`(min-width: 641px) ${Math.ceil(420 * bandPhoto.width / bandPhoto.height)}px, ${Math.ceil(280 * bandPhoto.width / bandPhoto.height)}px`}
 	/>
-	<img src={logoSeal.src} alt="Grace Lakey logo seal" class="band-logo" />
+	<div class="band-inner">
+		<img src={logoSeal.src} alt="Grace Lakey logo seal" class="band-logo" />
+	</div>
 </section>
 
 <style>
 	.photo-band {
 		position: relative;
-		background-color: var(--cream);
+		background-color: var(--photo-wall);
 		width: 100%;
-		height: 260px;
+		height: 280px;
 		overflow: hidden;
 	}
 
 	.photo-band :global(img.band-photo) {
 		display: block;
-		width: 100%;
+		width: auto;
 		height: 100%;
-		object-fit: cover;
+		margin: 0 auto;
+		object-fit: contain;
 		object-position: center 20%;
+		mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+		-webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+	}
+
+	.band-inner {
+		position: absolute;
+		inset: 1.5rem 1.5rem auto;
+		max-width: 72rem;
+		margin: 0 auto;
 	}
 
 	.band-logo {
-		position: absolute;
-		top: 1rem;
-		left: 1rem;
 		width: 48px;
 		height: 48px;
 		object-fit: contain;
@@ -44,15 +53,6 @@ import logoSeal from '../assets/brand/logo-coral.svg';
 	@media (min-width: 641px) {
 		.photo-band {
 			height: 420px;
-		}
-
-		.photo-band :global(img.band-photo) {
-			object-fit: contain;
-		}
-
-		.band-logo {
-			top: 1.5rem;
-			left: 1.5rem;
 		}
 	}
 </style>
