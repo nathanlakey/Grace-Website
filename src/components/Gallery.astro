@@ -2,34 +2,54 @@
 import { Image, getImage } from 'astro:assets';
 import { galleryPhotos } from '../data/gallery';
 import logoCoral from '../assets/brand/logo-coral.svg';
+import logoCream from '../assets/brand/logo-cream.svg';
+import Confetti from './Confetti.astro';
+
+// Crop the Canva export's empty margins without changing the shared logo assets.
+const sealView = '#svgView(viewBox(65,166,680,680))';
 
 // larger copy for the lightbox, only fetched when a photo is opened
 const fullSizeSrcs = await Promise.all(
-	galleryPhotos.map(async (photo) => (await getImage({ src: photo.src, width: 1600, format: 'webp' })).src)
+	galleryPhotos.map(async (photo) => photo.kind === 'photo'
+		? (await getImage({ src: photo.src, width: 1600, format: 'webp' })).src
+		: undefined)
 );
 ---
 
 <section id="gallery" class="gallery">
+	<div class="gallery-sweep" aria-hidden="true">
+		<Confetti variant="sweep" />
+	</div>
 	<div class="gallery-inner">
 		<ul class="gallery-grid">
-			<li class="gallery-heading"><h2>Gallery</h2></li>
+			<li class="gallery-heading">
+				<img src={logoCoral.src + sealView} alt="" class="section-seal" />
+				<h2>Gallery</h2>
+			</li>
 			<li class="gallery-brand" aria-hidden="true">
-				<img src={logoCoral.src} alt="" class="gallery-seal" />
+				<img src={logoCoral.src + sealView} alt="" class="gallery-seal" />
 			</li>
 			{galleryPhotos.map((photo, index) => (
 				<li class="gallery-item">
-					<button type="button" class="gallery-trigger" data-index={index} data-full={fullSizeSrcs[index]}>
-						<Image
-							src={photo.src}
-							alt={photo.alt}
-							style={`object-position: ${photo.objectPosition};`}
-							widths={[400, 800, 1200]}
-							sizes="(min-width: 1200px) 384px, (min-width: 641px) 33vw, 50vw"
-							format="webp"
-							loading="lazy"
-							decoding="async"
-						/>
-					</button>
+					{photo.kind === 'placeholder' ? (
+						<div class="gallery-placeholder">
+							<img src={logoCream.src + sealView} alt="" class="placeholder-seal" />
+							<p>{photo.label}</p>
+						</div>
+					) : (
+						<button type="button" class="gallery-trigger" data-full={fullSizeSrcs[index]}>
+							<Image
+								src={photo.src}
+								alt={photo.alt}
+								style={`object-position: ${photo.objectPosition};`}
+								widths={[400, 800, 1200]}
+								sizes="(min-width: 1248px) 381px, (min-width: 641px) calc((100vw - 104px) / 3), calc(100vw - 48px)"
+								format="webp"
+								loading="lazy"
+								decoding="async"
+							/>
+						</button>
+					)}
 				</li>
 			))}
 		</ul>
@@ -83,8 +103,14 @@ const fullSizeSrcs = await Promise.all(
 	});
 
 	dialog?.addEventListener('keydown', (event) => {
-		if (event.key === 'ArrowLeft') show(currentIndex - 1);
-		if (event.key === 'ArrowRight') show(currentIndex + 1);
+		if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+			event.preventDefault();
+			show(currentIndex + (event.key === 'ArrowLeft' ? -1 : 1));
+		}
+		if (event.key === 'Escape') {
+			event.preventDefault();
+			dialog.close();
+		}
 	});
 
 	dialog?.addEventListener('close', () => {
@@ -96,6 +122,8 @@ const fullSizeSrcs = await Promise.all(
 <style>
 	.gallery {
 		position: relative;
+		isolation: isolate;
+		overflow: clip;
 		background-color: var(--cream);
 		color: var(--ink);
 		padding: 6rem 1.5rem;
@@ -103,8 +131,19 @@ const fullSizeSrcs = await Promise.all(
 
 	.gallery-inner {
 		position: relative;
-		max-width: 72rem;
+		z-index: 1;
+		max-width: 75rem;
 		margin: 0 auto;
+	}
+
+	.gallery-sweep {
+		position: absolute;
+		top: 50%;
+		right: -210px;
+		width: 600px;
+		height: 180px;
+		transform: translateY(-50%) rotate(90deg);
+		pointer-events: none;
 	}
 
 	.gallery h2 {
@@ -115,25 +154,49 @@ const fullSizeSrcs = await Promise.all(
 	.gallery-grid {
 		list-style: none;
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 0.5rem;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1.75rem;
 	}
 
-	.gallery-heading,
+	.gallery-heading {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.gallery-heading .section-seal {
+		object-fit: fill;
+	}
+
 	.gallery-brand {
 		display: flex;
 		align-items: center;
-		aspect-ratio: 4 / 3;
-	}
-
-	.gallery-brand {
 		justify-content: center;
 	}
 
 	.gallery-seal {
-		width: 280px;
-		max-height: 100%;
-		object-fit: contain;
+		width: 200px;
+		height: 200px;
+		object-fit: fill;
+	}
+
+	.gallery-placeholder {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		background-color: var(--crimson);
+		color: var(--cream);
+		font-size: 0.875rem;
+	}
+
+	.placeholder-seal {
+		width: 40%;
+		aspect-ratio: 1;
+		object-fit: fill;
+		margin-bottom: 0.75rem;
 	}
 
 	.gallery-trigger {
@@ -143,6 +206,8 @@ const fullSizeSrcs = await Promise.all(
 		border: none;
 		padding: 0;
 		cursor: pointer;
+		aspect-ratio: 4 / 3;
+		border-radius: 0;
 	}
 
 	.gallery-trigger:focus-visible {
@@ -153,14 +218,21 @@ const fullSizeSrcs = await Promise.all(
 	.gallery-trigger :global(img) {
 		display: block;
 		width: 100%;
-		height: auto;
+		height: 100%;
 		aspect-ratio: 4 / 3;
 		object-fit: cover;
+		border-radius: 0;
 	}
 
 	@media (min-width: 641px) {
 		.gallery-grid {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.gallery-seal {
+			width: 340px;
+			height: auto;
+			aspect-ratio: 1;
 		}
 	}
 
@@ -184,7 +256,7 @@ const fullSizeSrcs = await Promise.all(
 		max-height: 90vh;
 		width: auto;
 		height: auto;
-		border-radius: 0.5rem;
+		border-radius: 0;
 	}
 
 	.lightbox-close,
@@ -203,6 +275,11 @@ const fullSizeSrcs = await Promise.all(
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.lightbox button:focus-visible {
+		outline: 3px solid var(--coral);
+		outline-offset: 3px;
 	}
 
 	.lightbox-close {

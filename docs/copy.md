@@ -93,6 +93,10 @@ Gallery
 
 *(Images only, no visible caption text.)*
 
+User-requested text for the Thinkery stage photo placeholder:
+
+photo coming soon
+
 ## FAQ
 
 FAQs
