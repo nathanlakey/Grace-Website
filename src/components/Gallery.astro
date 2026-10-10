@@ -1,11 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 import { galleryPhotos } from '../data/gallery';
+import Confetti from './Confetti.astro';
 ---
 
 <section id="gallery" class="gallery">
 	<div class="gallery-inner">
 		<h2>Gallery</h2>
+		<Confetti position="top-right" size="6rem" rotation={-4} />
 
 		<ul class="gallery-grid">
 			{galleryPhotos.map((photo, index) => (
@@ -17,6 +19,8 @@ import { galleryPhotos } from '../data/gallery';
 			))}
 		</ul>
 	</div>
+
+	<Confetti position="bottom-left" size="6rem" rotation={6} />
 
 	<dialog class="lightbox" aria-label="Photo gallery">
 		<button type="button" class="lightbox-close" aria-label="close">&times;</button>
@@ -77,12 +81,14 @@ import { galleryPhotos } from '../data/gallery';
 
 <style>
 	.gallery {
+		position: relative;
 		background-color: var(--cream);
 		color: var(--ink);
 		padding: 6rem 1.5rem;
 	}
 
 	.gallery-inner {
+		position: relative;
 		max-width: 72rem;
 		margin: 0 auto;
 	}

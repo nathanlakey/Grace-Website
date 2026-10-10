@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import aboutPhoto from '../assets/photos/headshot-6.jpeg';
 import { credentials } from '../data/credentials';
+import Confetti from './Confetti.astro';
 ---
 
 <section id="about" class="about">
@@ -12,6 +13,7 @@ import { credentials } from '../data/credentials';
 
 		<div class="about-content">
 			<h2>About</h2>
+			<Confetti position="top-right" size="7rem" rotation={-8} />
 
 			<p>
 				At 27, Grace Lakey's whole life changed with an Ancestry DNA test she took for fun. It
@@ -67,6 +69,10 @@ import { credentials } from '../data/credentials';
 		margin: 0 auto;
 		display: grid;
 		gap: 3rem;
+	}
+
+	.about-content {
+		position: relative;
 	}
 
 	.about-content h2 {
