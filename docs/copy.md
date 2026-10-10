@@ -154,3 +154,15 @@ my story
 bring me to your stage
 
 learn to auctioneer
+
+## Booking Auto-reply Email
+
+Got your inquiry
+
+Hi [first name], Thanks for reaching out. Your inquiry landed in my inbox and I'll be in touch within 2 business days to talk through your event. In the meantime, feel free to browse the gallery or come watch me sell live on Whatnot any week. Talk soon, Grace
+
+Grace Lakey
+
+Auctioneer | Emcee | Fundraising Consultant
+
+gracelakey.com

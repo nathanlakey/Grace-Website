@@ -1,9 +1,32 @@
 import type { APIRoute } from 'astro';
+import { Resend } from 'resend';
+import { bookingFields, type FormField } from '../../data/bookingForm.ts';
 
 export const prerender = false;
 
 const REQUIRED_TEXT_FIELDS = ['name', 'email', 'organization'] as const;
 const MIN_SUBMIT_SECONDS = 3;
+
+function escapeHtml(value: string) {
+	return value.replace(/[&<>"']/g, (character) => {
+		switch (character) {
+			case '&': return '&amp;';
+			case '<': return '&lt;';
+			case '>': return '&gt;';
+			case '"': return '&quot;';
+			default: return '&#39;';
+		}
+	});
+}
+
+function answerLabel(field: FormField, value: unknown): string {
+	if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+	if (Array.isArray(value)) {
+		return value.map((answer) => answerLabel(field, answer)).join(', ') || 'Not provided';
+	}
+	if (typeof value !== 'string' || value.trim() === '') return 'Not provided';
+	return field.options?.find((option) => option.id === value)?.label ?? value;
+}
 
 function jsonResponse(body: unknown, status: number) {
 	return new Response(JSON.stringify(body), {
@@ -66,25 +89,63 @@ export const POST: APIRoute = async ({ request }) => {
 		);
 	}
 
-	// Everything checks out. Log it for now; see the TODO below for what comes next.
-	console.log('Booking inquiry received:', body);
+	// Vercel supplies runtime variables; Astro also loads .env for local development.
+	const apiKey = process.env.RESEND_API_KEY ?? import.meta.env?.RESEND_API_KEY;
+	const toEmail = process.env.BOOKING_TO_EMAIL ?? import.meta.env?.BOOKING_TO_EMAIL;
+	if (!apiKey || !toEmail) {
+		console.error('Booking email configuration is missing RESEND_API_KEY or BOOKING_TO_EMAIL.');
+		return jsonResponse({ ok: false, error: 'Unable to send your inquiry. Please try again later.' }, 500);
+	}
 
-	/*
-	 * TODO: wire up Resend (https://resend.com) here instead of the console.log above.
-	 *
-	 * 1. Send an inquiry email to Grace (grace@gracelakey.com):
-	 *    - Subject: `Booking inquiry: ${services.join(', ')}, ${body.event_name_type || 'event name not given'}`
-	 *    - Body: a readable summary of every field in `body` (Step 1 contact/event info,
-	 *      the Step 2 answers relevant to the selected services, and any Step 3 notes).
-	 *
-	 * 2. Send an auto-reply to the submitter (body.email):
-	 *    - Subject: "Got your inquiry"
-	 *    - Body: a short confirmation that Grace received the inquiry and will follow up
-	 *      within 2 business days.
-	 *
-	 * Store the Resend API key in an environment variable (e.g. RESEND_API_KEY) read via
-	 * `import.meta.env.RESEND_API_KEY`, and never commit the key to the repo.
-	 */
+	const resend = new Resend(apiKey);
+	const email = String(body.email).trim();
+	const firstName = String(body.name).trim().split(/\s+/)[0];
+	const serviceField = bookingFields.find((field) => field.id === 'services');
+	const serviceLabels = services.map((service) =>
+		serviceField?.options?.find((option) => option.id === service)?.label ?? service
+	);
+	const eventName = [body.event_name_type, body.conference_name]
+		.find((value) => typeof value === 'string' && value.trim() !== '');
+	const subject = `Booking inquiry: ${serviceLabels.join(' + ')}${typeof eventName === 'string' ? `, ${eventName.trim()}` : ''}`;
+	const answers = bookingFields.map((field) => ({
+		label: field.label,
+		answer: answerLabel(field, body[field.id]),
+	}));
+	const html = `<table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse;text-align:left">${answers
+		.map(({ label, answer }) =>
+			`<tr><th scope="row" style="vertical-align:top">${escapeHtml(label)}</th><td style="white-space:pre-wrap">${escapeHtml(answer)}</td></tr>`
+		).join('')}</table>`;
+
+	try {
+		const { error } = await resend.emails.send({
+			from: 'Grace Lakey Website <bookings@gracelakey.com>',
+			to: toEmail,
+			replyTo: email,
+			subject,
+			html,
+			text: answers.map(({ label, answer }) => `${label}: ${answer}`).join('\n'),
+		});
+		if (error) throw error;
+	} catch (error) {
+		console.error('Booking inquiry email failed:', error);
+		return jsonResponse({ ok: false, error: 'Unable to send your inquiry. Please try again later.' }, 502);
+	}
+
+	const reply = `Hi ${firstName}, Thanks for reaching out. Your inquiry landed in my inbox and I'll be in touch within 2 business days to talk through your event. In the meantime, feel free to browse the gallery or come watch me sell live on Whatnot any week. Talk soon, Grace`;
+	const signature = 'Grace Lakey\nAuctioneer | Emcee | Fundraising Consultant\ngracelakey.com';
+	try {
+		const { error } = await resend.emails.send({
+			from: 'Grace Lakey <grace@gracelakey.com>',
+			to: email,
+			replyTo: 'grace@gracelakey.com',
+			subject: 'Got your inquiry',
+			html: `<p>${escapeHtml(reply)}</p><p>${escapeHtml(signature).replace(/\n/g, '<br>')}</p>`,
+			text: `${reply}\n\n${signature}`,
+		});
+		if (error) throw error;
+	} catch (error) {
+		console.error('Booking auto-reply email failed:', error);
+	}
 
 	return jsonResponse({ ok: true }, 200);
 };
