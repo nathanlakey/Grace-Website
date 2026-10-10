@@ -7,6 +7,9 @@ import Confetti from './Confetti.astro';
 ---
 
 <section id="about" class="about">
+	<div class="about-sweep" aria-hidden="true">
+		<Confetti variant="sweep" />
+	</div>
 	<div class="about-grid">
 		<div class="about-visual">
 			<img src={logoCoral.src} alt="" class="section-seal" />
@@ -17,8 +20,6 @@ import Confetti from './Confetti.astro';
 		</div>
 
 		<div class="about-content">
-			<Confetti position="top-right" size="7rem" rotation={-8} />
-
 			<p>
 				At 27, Grace Lakey's whole life changed with an Ancestry DNA test she took for fun. It
 				revealed a world-champion auctioneer dad she never knew she had, and set off a chain
@@ -63,12 +64,26 @@ import Confetti from './Confetti.astro';
 
 <style>
 	.about {
+		position: relative;
+		isolation: isolate;
 		background-color: var(--cream);
 		color: var(--ink);
 		padding: 6rem 1.5rem;
 	}
 
+	.about-sweep {
+		position: absolute;
+		top: -4rem;
+		left: max(1.5rem, calc((100% - 72rem) / 2));
+		width: min(500px, calc(100% - 3rem));
+		height: 180px;
+		z-index: -1;
+		pointer-events: none;
+	}
+
 	.about-grid {
+		position: relative;
+		z-index: 1;
 		max-width: 72rem;
 		margin: 0 auto;
 		display: grid;
@@ -77,6 +92,7 @@ import Confetti from './Confetti.astro';
 
 	.about-content {
 		position: relative;
+		background-color: var(--cream);
 	}
 
 	.about-visual h2 {

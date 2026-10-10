@@ -1,20 +1,20 @@
 ---
-// Reusable gold confetti/glitter accent: a cluster of scattered circles that
-// sweep diagonally out of one corner. Purely decorative.
+// Decorative gold accents: corner clusters or a flowing diagonal sweep.
 export interface Props {
 	position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 	size?: string;
 	rotation?: number;
 	showOnMobile?: boolean;
+	variant?: 'corner' | 'sweep';
 }
 
-const { position = 'top-right', size = '8rem', rotation = 0, showOnMobile = false } = Astro.props;
+const { position = 'top-right', size = '8rem', rotation = 0, showOnMobile = false, variant = 'corner' } = Astro.props;
 
 const GOLD_TONES = ['var(--gold-1)', 'var(--gold-2)', 'var(--gold-3)', 'var(--gold-4)'];
 const VIEWBOX = 160;
-const DOT_COUNT = 40;
+const DOT_COUNT = variant === 'sweep' ? 100 : 40;
 
-const dots = Array.from({ length: DOT_COUNT }, () => {
+const dots = Array.from({ length: DOT_COUNT }, (_, index) => {
 	// bias toward the corner so the cluster thins out as it sweeps across the diagonal
 	const along = Math.pow(Math.random(), 0.6) * VIEWBOX;
 	const jitter = (Math.random() - 0.5) * VIEWBOX * 0.5;
@@ -23,16 +23,27 @@ const dots = Array.from({ length: DOT_COUNT }, () => {
 	const radius = 1 + Math.random() * 6; // 2px-14px diameter
 	const opacity = 0.35 + Math.random() * 0.65; // some dots semi-transparent
 	const fill = GOLD_TONES[Math.floor(Math.random() * GOLD_TONES.length)];
+	if (variant === 'sweep') {
+		const t = index / (DOT_COUNT - 1);
+		const spread = 8 + 16 * Math.sin(Math.PI * t);
+		return {
+			x: 16 + 468 * t + (Math.random() - 0.5) * spread,
+			y: 150 - 126 * t + 20 * Math.sin(Math.PI * t) + (Math.random() - 0.5) * spread,
+			radius,
+			opacity,
+			fill,
+		};
+	}
 	return { x, y, radius, opacity, fill };
 });
 ---
 
 <div
-	class:list={['confetti', `confetti--${position}`, { 'confetti--mobile': showOnMobile }]}
+	class:list={['confetti', `confetti--${position}`, { 'confetti--mobile': showOnMobile, 'confetti--sweep': variant === 'sweep' }]}
 	style={`--confetti-size: ${size}; --confetti-rotation: ${rotation}deg;`}
 	aria-hidden="true"
 >
-	<svg viewBox={`0 0 ${VIEWBOX} ${VIEWBOX}`} xmlns="http://www.w3.org/2000/svg">
+	<svg viewBox={variant === 'sweep' ? '0 0 500 180' : `0 0 ${VIEWBOX} ${VIEWBOX}`} xmlns="http://www.w3.org/2000/svg" focusable="false">
 		{dots.map((dot) => (
 			<circle cx={dot.x} cy={dot.y} r={dot.radius} fill={dot.fill} opacity={dot.opacity} />
 		))}
@@ -78,8 +89,20 @@ const dots = Array.from({ length: DOT_COUNT }, () => {
 		transform: rotate(var(--confetti-rotation, 0deg)) scaleX(-1) scaleY(-1);
 	}
 
+	.confetti--sweep {
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		transform: none;
+		z-index: 0;
+	}
+
 	@media (max-width: 600px) {
 		.confetti:not(.confetti--mobile) {
+			display: none;
+		}
+
+		.confetti--sweep {
 			display: none;
 		}
 	}

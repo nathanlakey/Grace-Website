@@ -6,10 +6,9 @@ import { contactEmail } from '../data/site';
 
 <footer class="site-footer">
 	<div class="footer-main">
-		<Confetti position="top-left" size="6rem" rotation={-6} />
-		<Confetti position="top-right" size="6rem" rotation={8} />
-		<Confetti position="bottom-left" size="6rem" rotation={10} />
-		<Confetti position="bottom-right" size="6rem" rotation={-10} />
+		<div class="footer-sweep" aria-hidden="true">
+			<Confetti variant="sweep" />
+		</div>
 
 		<div class="footer-inner">
 			<div class="footer-left">
@@ -42,9 +41,20 @@ import { contactEmail } from '../data/site';
 <style>
 	.footer-main {
 		position: relative;
+		isolation: isolate;
 		background-color: var(--cream);
 		color: var(--ink);
 		padding: 5rem 1.5rem 4rem;
+	}
+
+	.footer-sweep {
+		position: absolute;
+		top: -6rem;
+		right: max(1.5rem, calc((100% - 72rem) / 2));
+		width: min(500px, calc(100% - 3rem));
+		height: 180px;
+		z-index: -1;
+		pointer-events: none;
 	}
 
 	.footer-inner {
