@@ -1,0 +1,244 @@
+---
+import { bookingFields } from '../data/bookingForm';
+import { contactEmail } from '../data/site';
+
+const stepFields = bookingFields.filter((field) => field.step === 1);
+const checkboxControllers = new Map(
+	stepFields.filter((field) => field.controlsFieldId).map((field) => [field.controlsFieldId, field])
+);
+const mainFields = stepFields.filter((field) => !field.controlsFieldId);
+---
+
+<section id="book" class="booking">
+	<div class="booking-inner">
+		<h2>Check availability</h2>
+
+		<div class="booking-card">
+			<p class="step-indicator">Step 1 of 3</p>
+
+			<form class="booking-form" novalidate>
+				<div class="form-grid">
+					{mainFields.map((field) => {
+						const pairedCheckbox = checkboxControllers.get(field.id);
+
+						if (field.type === 'checkboxes') {
+							return (
+								<fieldset class={`form-field field--${field.width ?? 'half'}`}>
+									<legend>
+										{field.label}
+										{field.required && <span class="required-mark" aria-hidden="true"> *</span>}
+									</legend>
+									<div class="checkbox-grid">
+										{field.options?.map((option) => (
+											<label class="checkbox-row">
+												<input type="checkbox" name={field.id} value={option.id} />
+												{option.label}
+											</label>
+										))}
+									</div>
+								</fieldset>
+							);
+						}
+
+						return (
+							<div class={`form-field field--${field.width ?? 'half'}`}>
+								<label for={field.id}>
+									{field.label}
+									{field.required && <span class="required-mark" aria-hidden="true"> *</span>}
+								</label>
+								<input
+									type={field.type}
+									id={field.id}
+									name={field.id}
+									required={field.required}
+								/>
+
+								{pairedCheckbox && (
+									<label class="checkbox-row checkbox-row--inline">
+										<input
+											type="checkbox"
+											id={pairedCheckbox.id}
+											name={pairedCheckbox.id}
+											data-controls={pairedCheckbox.controlsFieldId}
+										/>
+										{pairedCheckbox.label}
+									</label>
+								)}
+							</div>
+						);
+					})}
+				</div>
+
+				<div class="form-actions">
+					<button type="button" class="button">next</button>
+				</div>
+			</form>
+		</div>
+
+		<p class="general-inquiries">
+			General inquiries (press, schools, auctionStream):{' '}
+			<a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+		</p>
+	</div>
+</section>
+
+<script>
+	const controllers = document.querySelectorAll<HTMLInputElement>('[data-controls]');
+
+	controllers.forEach((controller) => {
+		const targetId = controller.dataset.controls;
+		const target = targetId ? document.getElementById(targetId) : null;
+		if (!(target instanceof HTMLInputElement)) return;
+
+		const syncDisabled = () => {
+			target.disabled = controller.checked;
+			if (controller.checked) target.value = '';
+		};
+
+		controller.addEventListener('change', syncDisabled);
+		syncDisabled();
+	});
+</script>
+
+<style>
+	.booking {
+		background-color: var(--cream);
+		color: var(--ink);
+		padding: 6rem 1.5rem;
+	}
+
+	.booking-inner {
+		max-width: 720px;
+		margin: 0 auto;
+	}
+
+	.booking h2 {
+		color: var(--crimson);
+		font-size: clamp(2.25rem, 5vw, 4rem);
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.booking-card {
+		background-color: #fff;
+		border-radius: 1rem;
+		padding: 2rem 1.5rem;
+		box-shadow: 0 4px 24px color-mix(in srgb, var(--ink) 10%, transparent);
+	}
+
+	.step-indicator {
+		font-weight: 700;
+		color: var(--charcoal);
+		margin-bottom: 1.5rem;
+	}
+
+	.form-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.form-field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		border: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.form-field label,
+	.form-field legend {
+		font-weight: 700;
+		font-size: 0.95rem;
+	}
+
+	.required-mark {
+		color: var(--crimson);
+	}
+
+	.form-field input[type='text'],
+	.form-field input[type='email'],
+	.form-field input[type='tel'],
+	.form-field input[type='date'] {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		border: 1.5px solid color-mix(in srgb, var(--ink) 25%, transparent);
+		background-color: var(--cream);
+		color: var(--ink);
+	}
+
+	.form-field input:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.form-field input:focus-visible {
+		outline: 3px solid var(--coral);
+		outline-offset: 2px;
+	}
+
+	.checkbox-row {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		font-weight: 500;
+		cursor: pointer;
+	}
+
+	.checkbox-row--inline {
+		margin-top: 0.25rem;
+		font-size: 0.9rem;
+	}
+
+	.checkbox-row input {
+		width: 1.1rem;
+		height: 1.1rem;
+		accent-color: var(--coral);
+		flex-shrink: 0;
+	}
+
+	.checkbox-row input:focus-visible {
+		outline: 3px solid var(--coral);
+		outline-offset: 2px;
+	}
+
+	.checkbox-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.75rem;
+	}
+
+	.field--full {
+		grid-column: 1 / -1;
+	}
+
+	.form-actions {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.general-inquiries {
+		text-align: center;
+		margin-top: 2rem;
+		font-size: 0.95rem;
+	}
+
+	.general-inquiries a {
+		color: var(--crimson);
+		text-decoration: underline;
+		text-underline-offset: 0.25rem;
+	}
+
+	@media (min-width: 641px) {
+		.form-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.checkbox-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+</style>

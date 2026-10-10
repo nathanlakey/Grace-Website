@@ -6,6 +6,7 @@ import Services from '../components/Services.astro';
 import Speaking from '../components/Speaking.astro';
 import Gallery from '../components/Gallery.astro';
 import FAQ from '../components/FAQ.astro';
+import Booking from '../components/Booking.astro';
 import PhotoBand from '../components/PhotoBand.astro';
 import Footer from '../components/Footer.astro';
 ---
@@ -17,23 +18,7 @@ import Footer from '../components/Footer.astro';
 	<Speaking />
 	<Gallery />
 	<FAQ />
-	<section id="book" class="placeholder bg-cream">
-		<h1>book</h1>
-	</section>
+	<Booking />
 	<PhotoBand />
 	<Footer />
 </BaseLayout>
-
-<style>
-	.placeholder {
-		min-height: 100vh;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.bg-cream {
-		background-color: var(--cream);
-		color: var(--ink);
-	}
-</style>
