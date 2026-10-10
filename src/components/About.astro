@@ -15,7 +15,15 @@ import Confetti from './Confetti.astro';
 			<img src={logoCoral.src} alt="" class="section-seal" />
 			<h2>About</h2>
 			<div class="photo-frame">
-				<Image src={aboutPhoto} alt="Grace Lakey sitting in a tan chair wearing a polka-dot top and olive skirt" />
+				<Image
+					src={aboutPhoto}
+					alt="Grace Lakey sitting in a tan chair wearing a polka-dot top and olive skirt"
+					widths={[400, 800, 1200]}
+					sizes="(min-width: 901px) 520px, (min-width: 432px) 384px, 100vw"
+					format="webp"
+					loading="lazy"
+					decoding="async"
+				/>
 			</div>
 		</div>
 

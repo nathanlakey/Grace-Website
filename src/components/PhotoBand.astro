@@ -9,8 +9,11 @@ import logoSeal from '../assets/brand/logo-coral.svg';
 		src={bandPhoto}
 		alt="Grace Lakey smiling in a black blazer with a polka-dot top"
 		class="band-photo"
-		widths={[640, 1024, 1600, 2048]}
+		widths={[400, 800, 1200]}
 		sizes={`(min-width: 641px) ${Math.ceil(420 * bandPhoto.width / bandPhoto.height)}px, ${Math.ceil(280 * bandPhoto.width / bandPhoto.height)}px`}
+		format="webp"
+		loading="lazy"
+		decoding="async"
 	/>
 	<div class="band-inner">
 		<img src={logoSeal.src} alt="Grace Lakey logo seal" class="band-logo" />

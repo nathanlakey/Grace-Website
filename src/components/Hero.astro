@@ -26,7 +26,11 @@ import heroPhoto from '../assets/photos/hero-cutout.png';
 				src={heroPhoto}
 				alt="Grace Lakey smiling in a black suit with feathered cuffs, hands in her hair"
 				class="hero-photo"
+				widths={[400, 800, 1200]}
+				sizes="(min-width: 901px) 512px, (min-width: 481px) 448px, 100vw"
+				format="webp"
 				loading="eager"
+				fetchpriority="high"
 			/>
 		</div>
 	</div>

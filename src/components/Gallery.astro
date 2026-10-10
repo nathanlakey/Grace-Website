@@ -1,7 +1,12 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { galleryPhotos } from '../data/gallery';
 import logoCoral from '../assets/brand/logo-coral.svg';
+
+// larger copy for the lightbox, only fetched when a photo is opened
+const fullSizeSrcs = await Promise.all(
+	galleryPhotos.map(async (photo) => (await getImage({ src: photo.src, width: 1600, format: 'webp' })).src)
+);
 ---
 
 <section id="gallery" class="gallery">
@@ -13,8 +18,17 @@ import logoCoral from '../assets/brand/logo-coral.svg';
 			</li>
 			{galleryPhotos.map((photo, index) => (
 				<li class="gallery-item">
-					<button type="button" class="gallery-trigger" data-index={index}>
-						<Image src={photo.src} alt={photo.alt} style={`object-position: ${photo.objectPosition};`} loading="lazy" />
+					<button type="button" class="gallery-trigger" data-index={index} data-full={fullSizeSrcs[index]}>
+						<Image
+							src={photo.src}
+							alt={photo.alt}
+							style={`object-position: ${photo.objectPosition};`}
+							widths={[400, 800, 1200]}
+							sizes="(min-width: 1200px) 384px, (min-width: 641px) 33vw, 50vw"
+							format="webp"
+							loading="lazy"
+							decoding="async"
+						/>
 					</button>
 				</li>
 			))}
@@ -42,9 +56,10 @@ import logoCoral from '../assets/brand/logo-coral.svg';
 
 	function show(index: number) {
 		currentIndex = (index + triggers.length) % triggers.length;
-		const img = triggers[currentIndex].querySelector('img');
+		const trigger = triggers[currentIndex];
+		const img = trigger.querySelector('img');
 		if (img && lightboxImage) {
-			lightboxImage.src = img.currentSrc || img.src;
+			lightboxImage.src = trigger.dataset.full || img.currentSrc || img.src;
 			lightboxImage.alt = img.alt;
 		}
 	}

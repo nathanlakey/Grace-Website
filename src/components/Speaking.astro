@@ -46,7 +46,15 @@ const topics = [
 		</div>
 
 		<div class="speaking-photo">
-			<Image src={speakingPhoto} alt="Grace Lakey speaking into a microphone on stage at a Manheim Dallas event" />
+			<Image
+				src={speakingPhoto}
+				alt="Grace Lakey speaking into a microphone on stage at a Manheim Dallas event"
+				widths={[400, 800, 1200]}
+				sizes="(min-width: 901px) 576px, 100vw"
+				format="webp"
+				loading="lazy"
+				decoding="async"
+			/>
 		</div>
 	</div>
 </section>

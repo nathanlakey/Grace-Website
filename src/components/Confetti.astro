@@ -12,7 +12,7 @@ const { position = 'top-right', size = '8rem', rotation = 0, showOnMobile = fals
 
 const GOLD_TONES = ['var(--gold-1)', 'var(--gold-2)', 'var(--gold-3)', 'var(--gold-4)'];
 const VIEWBOX = 160;
-const DOT_COUNT = variant === 'sweep' ? 100 : 40;
+const DOT_COUNT = variant === 'sweep' ? 60 : 40;
 
 const dots = Array.from({ length: DOT_COUNT }, (_, index) => {
 	// bias toward the corner so the cluster thins out as it sweeps across the diagonal
