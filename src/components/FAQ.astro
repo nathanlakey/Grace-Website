@@ -1,0 +1,211 @@
+---
+import { faqs } from '../data/faq';
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((item) => ({
+		'@type': 'Question',
+		name: item.question,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: item.answer,
+		},
+	})),
+};
+---
+
+<section id="faq" class="faq">
+	<div class="faq-inner">
+		<h2>FAQs</h2>
+
+		<ul class="faq-list">
+			{faqs.map((item, index) => (
+				<li class="faq-item">
+					<button
+						type="button"
+						class="faq-toggle"
+						aria-expanded="false"
+						aria-controls={`faq-panel-${index}`}
+						id={`faq-toggle-${index}`}
+					>
+						<span class="faq-question">{item.question}</span>
+						<span class="faq-icon" aria-hidden="true"></span>
+					</button>
+
+					<div class="faq-panel-wrap">
+						<div
+							class="faq-panel"
+							id={`faq-panel-${index}`}
+							role="region"
+							aria-labelledby={`faq-toggle-${index}`}
+							aria-hidden="true"
+						>
+							<p>{item.answer}</p>
+						</div>
+					</div>
+				</li>
+			))}
+		</ul>
+	</div>
+
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</section>
+
+<script>
+	const toggles = document.querySelectorAll<HTMLButtonElement>('.faq-toggle');
+
+	function setPanelState(toggle: HTMLButtonElement, isOpen: boolean) {
+		toggle.setAttribute('aria-expanded', String(isOpen));
+		const panel = document.getElementById(toggle.getAttribute('aria-controls') ?? '');
+		panel?.setAttribute('aria-hidden', String(!isOpen));
+	}
+
+	toggles.forEach((toggle) => {
+		toggle.addEventListener('click', () => {
+			const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+			toggles.forEach((other) => setPanelState(other, false));
+			if (!isOpen) setPanelState(toggle, true);
+		});
+	});
+</script>
+
+<style>
+	.faq {
+		background-color: var(--pale-yellow);
+		color: var(--ink);
+		padding: 6rem 1.5rem;
+	}
+
+	.faq-inner {
+		max-width: 1000px;
+		margin: 0 auto;
+	}
+
+	.faq h2 {
+		color: var(--crimson);
+		font-size: clamp(2.25rem, 5vw, 4rem);
+		margin-bottom: 2.5rem;
+	}
+
+	.faq-list {
+		list-style: none;
+		column-count: 1;
+		column-gap: 2rem;
+	}
+
+	.faq-item {
+		break-inside: avoid;
+		margin-bottom: 1.25rem;
+		background-color: var(--cream);
+		border-radius: 0.75rem;
+		overflow: hidden;
+	}
+
+	.faq-toggle {
+		position: relative;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1.25rem 3rem 1.25rem 1.5rem;
+		background: none;
+		border: none;
+		color: inherit;
+		text-align: left;
+		cursor: pointer;
+	}
+
+	.faq-toggle:focus-visible {
+		outline: 3px solid var(--crimson);
+		outline-offset: -3px;
+	}
+
+	.faq-question {
+		font-family: 'DM Sans', sans-serif;
+		font-weight: 700;
+		font-size: 1.05rem;
+		line-height: 1.4;
+	}
+
+	.faq-icon {
+		position: absolute;
+		top: 1.4rem;
+		right: 1.5rem;
+		width: 1.1rem;
+		height: 1.1rem;
+		flex-shrink: 0;
+		transition: transform 0.2s ease;
+	}
+
+	.faq-icon::before,
+	.faq-icon::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		background-color: var(--crimson);
+		transform: translate(-50%, -50%);
+	}
+
+	.faq-icon::before {
+		width: 100%;
+		height: 2px;
+	}
+
+	.faq-icon::after {
+		width: 2px;
+		height: 100%;
+	}
+
+	.faq-toggle[aria-expanded='true'] .faq-icon {
+		transform: rotate(45deg);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.faq-icon {
+			transition: none;
+		}
+	}
+
+	.faq-panel-wrap {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 220ms ease;
+	}
+
+	.faq-toggle[aria-expanded='true'] + .faq-panel-wrap {
+		grid-template-rows: 1fr;
+	}
+
+	.faq-panel {
+		overflow: hidden;
+		min-height: 0;
+		padding: 0 1.5rem 1.25rem;
+		visibility: hidden;
+		opacity: 0;
+		transform: translateY(8px);
+		transition: opacity 220ms ease, transform 220ms ease, visibility 0s linear 220ms;
+	}
+
+	.faq-toggle[aria-expanded='true'] + .faq-panel-wrap .faq-panel {
+		visibility: visible;
+		opacity: 1;
+		transform: translateY(0);
+		transition: opacity 220ms ease, transform 220ms ease, visibility 0s linear 0s;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.faq-panel-wrap,
+		.faq-panel {
+			transition: none;
+		}
+	}
+
+	@media (min-width: 641px) {
+		.faq-list {
+			column-count: 2;
+		}
+	}
+</style>

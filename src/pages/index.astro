@@ -5,6 +5,7 @@ import About from '../components/About.astro';
 import Services from '../components/Services.astro';
 import Speaking from '../components/Speaking.astro';
 import Gallery from '../components/Gallery.astro';
+import FAQ from '../components/FAQ.astro';
 ---
 
 <BaseLayout>
@@ -13,9 +14,7 @@ import Gallery from '../components/Gallery.astro';
 	<Services />
 	<Speaking />
 	<Gallery />
-	<section id="faq" class="placeholder bg-cream faq">
-		<h1>faq</h1>
-	</section>
+	<FAQ />
 	<section id="book" class="placeholder bg-cream">
 		<h1>book</h1>
 	</section>
@@ -32,9 +31,5 @@ import Gallery from '../components/Gallery.astro';
 	.bg-cream {
 		background-color: var(--cream);
 		color: var(--ink);
-	}
-
-	.faq h1 {
-		color: var(--crimson);
 	}
 </style>
