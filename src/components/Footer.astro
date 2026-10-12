@@ -44,7 +44,7 @@ import { contactEmail } from '../data/site';
 		isolation: isolate;
 		background-color: var(--cream);
 		color: var(--ink);
-		padding: 5rem 1.5rem 4rem;
+		padding: 5rem 0 4rem;
 	}
 
 	.footer-sweep {
@@ -61,7 +61,7 @@ import { contactEmail } from '../data/site';
 	.footer-inner {
 		position: relative;
 		z-index: 2;
-		max-width: 72rem;
+		width: min(72rem, calc(100% - 3rem));
 		margin: 0 auto;
 		display: grid;
 		gap: 3rem;
@@ -137,11 +137,11 @@ import { contactEmail } from '../data/site';
 	.footer-bottom {
 		background-color: var(--ink);
 		color: var(--cream);
-		padding: 1rem 1.5rem;
+		padding: 1rem 0;
 	}
 
 	.footer-bottom-inner {
-		max-width: 72rem;
+		width: min(72rem, calc(100% - 3rem));
 		margin: 0 auto;
 		display: flex;
 		flex-wrap: wrap;
