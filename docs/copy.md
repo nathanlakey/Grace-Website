@@ -2,7 +2,7 @@
 
 Extracted word-for-word from https://lynx-ftk12k.my.canva.site/ on 2026-10-08. No rewriting. Images are noted but their content isn't transcribed since they carry no visible text beyond what's listed below.
 
-> Note: the page-fetch tool could not return the full text of every list (e.g. the "Emcee & Event Hosting" bullet list below may be cut short — it ends abruptly compared to the other two lists). If anything looks incomplete, double-check directly on the live site.
+> Note: Grace confirmed that the "Emcee & Event Hosting" bullet list has three items.
 
 ## Header / Navigation
 
@@ -16,17 +16,13 @@ GraceLakey
 
 AUCTIONEER & EMCEE WITH A FLAIR FOR STYLE, ENTERTAINMENT, & RAISING MONEY
 
-User-confirmed supporting Hero lines:
-
-Polished. Powerful. Profitable.
-
 Add a little sparkle. Raise a lot of money.
 
 ## About
 
 About
 
-At 27, Grace Lakey's whole life changed with an Ancestry DNA test she took for fun. It revealed a world-champion auctioneer dad she never knew she had, and set off a chain reaction: she left corporate America for the unconventional world of auctioneering, and never looked back.
+Grace Lakey's whole life changed with a discovery she never saw coming. That unexpected plot twist set off a chain reaction: she left corporate America for the unconventional world of auctioneering, and never looked back.
 
 Grace's work goes way beyond her *mad cool* bid calling skills. She consults with fundraising committees on strategy, emcees events that keep people in their seats (or jumping to their feet in a good way), and brings the kind of energy that turns a quiet ballroom into a crowd eager to participate. When you see her tagline, "Add a little sparkle, raise a lot of money," know that she means every word. And yes, she can sing, too.
 
@@ -35,6 +31,11 @@ Grace is a licensed auctioneer. She teaches at three of the largest auction scho
 Off the clock, Grace soaks in time with her (now much larger) family and travels around the world with her husband, Nate, and their fur-baby, Lady Bird. She is all about chasing dreams and making the most out of life.
 
 Ready to raise the bar and the paddles? Let's talk.
+
+Credentials:
+
+- BAS designation
+- Licensed Texas Auctioneer
 
 ## Services
 
@@ -85,13 +86,13 @@ What's included:
 - Paddle raise structure and ask-level planning
 - Post-event debrief so next year beats this year
 
-## Speaking
+### Keynote Speaking
 
-At 27, a DNA test I took for fun revealed that my dad wasn't my biological father. Many twists and turns later, that accidental discovery led me out of my stable corporate job, into the auction world, and eventually to building my own businesses from scratch.
-
-Now I tell that story from stages, and I tailor it to what your audience needs to hear: taking the risk, rebuilding after trauma, betting on yourself, or breaking into an industry where you're not who they expected.
+My path here wasn't normal. It started with a DNA test I took for fun and a life change I never saw coming. That twist led me out of my stable corporate job, into the auction world, and eventually to building businesses of my own. Now I tell that story from stages, tailored to what your audience needs to hear: taking the risk, rebuilding when the ground shifts, betting on yourself, or walking into an industry where you're not who they expected.
 
 Keynotes, breakout sessions, panels, luncheons. If your audience needs a reason to bet on themselves, I have a few.
+
+Book me for all of it or just the part you need. We'll build the booking around your event.
 
 ## Gallery
 

@@ -46,7 +46,9 @@ import { services } from '../data/services';
 			))}
 		</ul>
 
-		<!-- TODO: closing line from Grace -->
+		<p class="services-closing">
+			Book me for all of it or just the part you need. We'll build the booking around your event.
+		</p>
 		<a href="#book" class="button">check availability</a>
 	</div>
 </section>
@@ -101,6 +103,14 @@ import { services } from '../data/services';
 		text-transform: lowercase;
 		color: color-mix(in srgb, var(--ink) 70%, transparent);
 		margin-bottom: 2rem;
+	}
+
+	.services-closing {
+		max-width: 42rem;
+		margin-bottom: 1.5rem;
+		font-family: 'Montserrat', sans-serif;
+		font-weight: 800;
+		font-size: clamp(1.25rem, 2vw, 1.5rem);
 	}
 
 	.tiles {

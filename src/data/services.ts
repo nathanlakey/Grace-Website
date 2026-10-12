@@ -53,8 +53,7 @@ export const services: Service[] = [
 		title: 'Keynote Speaking',
 		color: 'pink',
 		description: [
-			"At 27, a DNA test I took for fun revealed that my dad wasn't my biological father. Many twists and turns later, that accidental discovery led me out of my stable corporate job, into the auction world, and eventually to building my own businesses from scratch.",
-			"Now I tell that story from stages, and I tailor it to what your audience needs to hear: taking the risk, rebuilding after trauma, betting on yourself, or breaking into an industry where you're not who they expected.",
+			"My path here wasn't normal. It started with a DNA test I took for fun and a life change I never saw coming. That twist led me out of my stable corporate job, into the auction world, and eventually to building businesses of my own. Now I tell that story from stages, tailored to what your audience needs to hear: taking the risk, rebuilding when the ground shifts, betting on yourself, or walking into an industry where you're not who they expected.",
 			'Keynotes, breakout sessions, panels, luncheons. If your audience needs a reason to bet on themselves, I have a few.',
 		],
 	},

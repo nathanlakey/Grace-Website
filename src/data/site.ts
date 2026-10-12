@@ -3,12 +3,11 @@ export interface SocialLink {
 	href: string;
 }
 
-// TODO: replace every placeholder URL below with Grace's real profile links
 export const socialLinks: SocialLink[] = [
-	{ label: 'LinkedIn', href: 'https://www.linkedin.com/TODO' },
-	{ label: 'Instagram', href: 'https://www.instagram.com/TODO' },
-	{ label: 'Facebook', href: 'https://www.facebook.com/TODO' },
-	{ label: 'TikTok', href: 'https://www.tiktok.com/@TODO' },
+	{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/gracekirkland' },
+	{ label: 'Instagram', href: 'https://www.instagram.com/gracetheauctioneer' },
+	{ label: 'Facebook', href: 'https://www.facebook.com/share/19Dyv3y7y5/' },
+	{ label: 'TikTok', href: 'https://www.tiktok.com/@gracelakeyy' },
 ];
 
 export const contactEmail = 'grace@gracelakey.com';
