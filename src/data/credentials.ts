@@ -3,6 +3,5 @@ export interface Credential {
 }
 
 export const credentials: Credential[] = [
-	{ label: 'BAS designation' },
 	{ label: 'Licensed Texas Auctioneer' },
 ];

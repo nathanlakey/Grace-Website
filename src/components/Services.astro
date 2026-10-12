@@ -59,7 +59,6 @@ import Glitter from './Glitter.astro';
 
 <script>
 	const toggles = document.querySelectorAll<HTMLButtonElement>('.tile-toggle');
-	const hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)');
 
 	function setPanelState(toggle: HTMLButtonElement, isOpen: boolean) {
 		toggle.setAttribute('aria-expanded', String(isOpen));
@@ -67,19 +66,11 @@ import Glitter from './Glitter.astro';
 		panel?.setAttribute('aria-hidden', String(!isOpen));
 	}
 
-	function activate(toggle: HTMLButtonElement) {
-		toggles.forEach((other) => {
-			setPanelState(other, other === toggle);
-		});
-	}
-
 	toggles.forEach((toggle) => {
 		toggle.addEventListener('click', () => {
-			activate(toggle);
-		});
-
-		toggle.addEventListener('mouseenter', () => {
-			if (hoverCapable.matches) activate(toggle);
+			const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+			toggles.forEach((other) => setPanelState(other, false));
+			if (!isOpen) setPanelState(toggle, true);
 		});
 	});
 </script>
@@ -169,20 +160,16 @@ import Glitter from './Glitter.astro';
 	.tile-toggle {
 		position: relative;
 		width: 100%;
-		min-height: 360px;
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		padding: 3.5rem 1.5rem;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1.75rem 3.5rem 1.75rem 1.75rem;
 		background: none;
 		border: none;
 		color: inherit;
-		text-align: center;
+		text-align: left;
 		cursor: pointer;
-	}
-
-	.tile-toggle[aria-expanded='true'] {
-		min-height: 10rem;
 	}
 
 	.tile-toggle:focus-visible {
@@ -200,10 +187,11 @@ import Glitter from './Glitter.astro';
 
 	.tile-icon {
 		position: absolute;
-		top: 1.5rem;
-		right: 1.5rem;
-		width: 1.25rem;
-		height: 1.25rem;
+		top: 50%;
+		right: 1.75rem;
+		width: 1.1rem;
+		height: 1.1rem;
+		transform: translateY(-50%);
 		transition: transform 0.2s ease;
 	}
 
@@ -228,7 +216,7 @@ import Glitter from './Glitter.astro';
 	}
 
 	.tile-toggle[aria-expanded='true'] .tile-icon {
-		transform: rotate(45deg);
+		transform: translateY(-50%) rotate(45deg);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -250,7 +238,7 @@ import Glitter from './Glitter.astro';
 	.tile-panel {
 		overflow: hidden;
 		min-height: 0;
-		padding: 0 1.5rem;
+		padding: 0 1.75rem;
 		visibility: hidden;
 		opacity: 0;
 		transform: translateY(8px);
@@ -258,7 +246,7 @@ import Glitter from './Glitter.astro';
 	}
 
 	.tile-toggle[aria-expanded='true'] + .tile-panel-wrap .tile-panel {
-		padding-bottom: 1.5rem;
+		padding-bottom: 1.75rem;
 		visibility: visible;
 		opacity: 1;
 		transform: translateY(0);
@@ -287,17 +275,5 @@ import Glitter from './Glitter.astro';
 
 	.tile-bullets li {
 		margin-bottom: 0.5rem;
-	}
-
-	@media (min-width: 641px) {
-		.tiles {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
-
-	@media (min-width: 1025px) {
-		.tiles {
-			grid-template-columns: repeat(4, minmax(0, 1fr));
-		}
 	}
 </style>

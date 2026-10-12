@@ -38,6 +38,6 @@ export const faqs: FAQItem[] = [
 		question:
 			'Do you handle clerking, bid-spotting, online bidding, silent auction software, or checkout?',
 		answer:
-			"I can facilitate all of it for an additional fee: clerking, mobile bidding platforms, silent auction software, and a checkout process that doesn't leave your guests standing in line. I also have relationships with trip consignment companies and benefit auction software providers, so I can walk your committee through the options, what they cost, and what actually fits your event.",
+			'Other than bid-spotting, I do not personally have a team that provides software and checkout; however, I have relationships with people who do and can provide solid recommendations for those services. I also have partnerships with trip consignment companies and benefit auction software providers, so I can walk your committee through the options, referral discounts, and what actually fits your event.',
 	},
 ];
