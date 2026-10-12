@@ -2,7 +2,7 @@
 import { Image, getImage } from 'astro:assets';
 import { galleryPhotos } from '../data/gallery';
 import logoCoral from '../assets/brand/logo-coral.svg';
-import Glitter from './Glitter.astro';
+import glitterTrail from '../assets/brand/glitter-trail.png';
 
 // Crop the Canva export's empty margins without changing the shared logo assets.
 const sealView = '#svgView(viewBox(65,166,680,680))';
@@ -15,10 +15,18 @@ const fullSizeSrcs = await Promise.all(
 ---
 
 <section id="gallery" class="gallery">
-	<div class="gallery-sweep" aria-hidden="true">
-		<Glitter />
-	</div>
 	<div class="gallery-inner">
+		<div class="gallery-sweep" aria-hidden="true">
+			<img
+				src={glitterTrail.src}
+				width={glitterTrail.width}
+				height={glitterTrail.height}
+				alt=""
+				class="gallery-glitter"
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
 		<ul class="gallery-grid">
 			<li class="gallery-heading">
 				<img src={logoCoral.src + sealView} alt="" class="section-seal" />
@@ -129,12 +137,26 @@ const fullSizeSrcs = await Promise.all(
 
 	.gallery-sweep {
 		position: absolute;
-		top: 50%;
-		right: -210px;
-		width: 600px;
-		height: 180px;
-		transform: translateY(-50%) rotate(90deg);
+		top: -5rem;
+		right: -0.5rem;
+		width: min(580px, 48vw);
+		z-index: 2;
 		pointer-events: none;
+	}
+
+	.gallery-glitter {
+		width: 100%;
+		height: auto;
+		display: block;
+		transform: rotate(48deg);
+		transform-origin: center;
+		pointer-events: none;
+	}
+
+	@media (max-width: 640px) {
+		.gallery-sweep {
+			display: none;
+		}
 	}
 
 	.gallery h2 {

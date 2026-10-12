@@ -3,12 +3,20 @@ import { Image } from 'astro:assets';
 import aboutPhoto from '../assets/photos/about-chair-yellow.png';
 import logoCoral from '../assets/brand/logo-coral.svg';
 import { credentials } from '../data/credentials';
-import Glitter from './Glitter.astro';
+import glitterTrail from '../assets/brand/glitter-trail.png';
 ---
 
 <section id="about" class="about">
 	<div class="about-sweep" aria-hidden="true">
-		<Glitter />
+		<img
+			src={glitterTrail.src}
+			width={glitterTrail.width}
+			height={glitterTrail.height}
+			alt=""
+			class="about-glitter"
+			loading="lazy"
+			decoding="async"
+		/>
 	</div>
 	<div class="about-grid">
 		<div class="about-visual">
@@ -79,13 +87,28 @@ import Glitter from './Glitter.astro';
 
 	.about-sweep {
 		position: absolute;
-		top: -4rem;
-		left: max(1.5rem, calc((100% - 72rem) / 2));
-		width: min(500px, calc(100% - 3rem));
-		height: 180px;
-		z-index: -1;
+		top: -7rem;
+		left: max(0px, calc((100% - 72rem) / 2 + 2.5rem));
+		width: min(720px, 85vw);
+		z-index: 0;
 		pointer-events: none;
-		transform: scaleX(-1);
+	}
+
+	.about-glitter {
+		width: 100%;
+		height: auto;
+		display: block;
+		transform: scaleX(-1) rotate(15deg);
+		transform-origin: center;
+		pointer-events: none;
+	}
+
+	@media (max-width: 900px) {
+		.about-sweep {
+			top: -4rem;
+			left: 1rem;
+			width: min(460px, 90vw);
+		}
 	}
 
 	.about-grid {
@@ -99,7 +122,6 @@ import Glitter from './Glitter.astro';
 
 	.about-content {
 		position: relative;
-		background-color: var(--cream);
 	}
 
 	.about-visual h2 {
@@ -165,7 +187,7 @@ import Glitter from './Glitter.astro';
 	@media (min-width: 901px) {
 		.about-grid {
 			grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-			align-items: center;
+			align-items: start;
 			gap: 2.5rem;
 		}
 
@@ -173,6 +195,10 @@ import Glitter from './Glitter.astro';
 			margin: 0;
 			max-width: none;
 			width: 100%;
+		}
+
+		.about-content {
+			margin-top: calc(48px + 1rem);
 		}
 	}
 </style>

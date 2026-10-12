@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import heroPhoto from '../assets/photos/hero-coral-block.jpg';
+import heroPhoto from '../assets/photos/hero-coral-block.png';
 ---
 
 <section id="top" class="hero">
@@ -24,8 +24,8 @@ import heroPhoto from '../assets/photos/hero-coral-block.jpg';
 				src={heroPhoto}
 				alt="Grace Lakey smiling in a black suit with feathered cuffs, hands in her hair"
 				class="hero-photo"
-				widths={[400, 800, 1200]}
-				sizes="(min-width: 901px) 512px, (min-width: 481px) 448px, 100vw"
+				widths={[400, 646]}
+				sizes="(min-width: 901px) 700px, min(100vw, 420px)"
 				format="webp"
 				loading="eager"
 				fetchpriority="high"
@@ -38,7 +38,7 @@ import heroPhoto from '../assets/photos/hero-coral-block.jpg';
 	.hero {
 		background-color: var(--cream);
 		color: var(--ink);
-		padding: 4rem 1.5rem 0;
+		padding: 3rem 1.5rem 0;
 		overflow: hidden;
 	}
 
@@ -46,7 +46,7 @@ import heroPhoto from '../assets/photos/hero-coral-block.jpg';
 		max-width: 72rem;
 		margin: 0 auto;
 		display: grid;
-		gap: 3rem;
+		gap: 2.5rem;
 	}
 
 	.hero-content {
@@ -101,45 +101,54 @@ import heroPhoto from '../assets/photos/hero-coral-block.jpg';
 	}
 
 	.hero-visual {
-		position: relative;
-		width: min(100%, 28rem);
-		aspect-ratio: 895 / 767;
+		width: min(100%, 420px);
 		margin: 0 auto;
 	}
 
 	.hero-visual :global(.hero-photo) {
-		position: absolute;
-		inset: 0;
 		width: 100%;
-		height: 100%;
+		height: auto;
+		display: block;
 		object-fit: contain;
-		object-position: bottom;
 	}
 
 	@media (min-width: 901px) {
 		.hero {
 			min-height: calc(100svh - var(--nav-height));
 			display: flex;
-			align-items: stretch;
-			padding-top: 2rem;
+			align-items: center;
+			padding: 1.5rem 1.5rem 0;
 		}
 
 		.hero-grid {
 			width: 100%;
 			grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-			align-items: end;
+			align-items: center;
 			gap: 3rem;
 		}
 
 		.hero-content {
 			align-self: center;
-			padding-bottom: 4rem;
+			padding-bottom: 0;
 		}
 
 		.hero-visual {
-			width: min(100%, 32rem, 46svh);
-			aspect-ratio: 990 / 1394;
+			width: auto;
+			height: 85vh;
+			max-height: 85vh;
+			max-width: 100%;
 			margin: 0 0 0 auto;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+		}
+
+		.hero-visual :global(.hero-photo) {
+			width: auto;
+			height: 85vh;
+			max-height: 85vh;
+			max-width: 100%;
+			object-fit: contain;
 		}
 	}
 
