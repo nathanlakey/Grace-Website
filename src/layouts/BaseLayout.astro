@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
+import logoCoralUrl from '../assets/brand/logo-coral-clean.svg?url';
 
 interface Props {
 	title?: string;
@@ -13,7 +14,7 @@ const { title = 'Grace Lakey', showNav = true } = Astro.props;
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href={logoCoralUrl} />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />

@@ -38,6 +38,13 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Brand logo
+
+Use `src/assets/brand/logo-coral-clean.svg` directly as an SVG for the nav,
+section seals, photo-band seal, large gallery seal, and favicon. Do not rasterize
+it or apply filters, opacity, or color overrides. The nav logo is 64px tall on
+desktop and 52px at widths up to 768px; small seals are 48px.
+
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

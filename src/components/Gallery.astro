@@ -1,11 +1,8 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import { galleryPhotos } from '../data/gallery';
-import logoCoral from '../assets/brand/logo-coral.svg';
+import logoCoral from '../assets/brand/logo-coral-clean.svg';
 import glitterTrail from '../assets/brand/glitter-trail.png';
-
-// Crop the Canva export's empty margins without changing the shared logo assets.
-const sealView = '#svgView(viewBox(65,166,680,680))';
 
 // larger copy for the lightbox, only fetched when a photo is opened
 const fullSizeSrcs = await Promise.all(
@@ -29,11 +26,11 @@ const fullSizeSrcs = await Promise.all(
 				/>
 			</li>
 			<li class="gallery-heading">
-				<img src={logoCoral.src + sealView} alt="" class="section-seal" />
+				<img src={logoCoral.src} alt="" class="section-seal" />
 				<h2>Gallery</h2>
 			</li>
 			<li class="gallery-brand" aria-hidden="true">
-				<img src={logoCoral.src + sealView} alt="" class="gallery-seal" />
+				<img src={logoCoral.src} alt="" class="gallery-seal" />
 			</li>
 			{galleryPhotos.map((photo, index) => (
 				<li class="gallery-item">
@@ -190,10 +187,6 @@ const fullSizeSrcs = await Promise.all(
 		align-items: flex-start;
 	}
 
-	.gallery-heading .section-seal {
-		object-fit: fill;
-	}
-
 	.gallery-brand {
 		display: flex;
 		align-items: center;
@@ -203,7 +196,7 @@ const fullSizeSrcs = await Promise.all(
 	.gallery-seal {
 		width: 200px;
 		height: 200px;
-		object-fit: fill;
+		object-fit: contain;
 	}
 
 	.gallery-trigger {
