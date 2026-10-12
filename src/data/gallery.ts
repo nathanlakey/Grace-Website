@@ -1,6 +1,6 @@
 import groundbreaking2 from '../assets/photos/groundbreaking-2.jpg';
 import thinkery from '../assets/photos/gallery-thinkery.jpg';
-import deskGavel from '../assets/photos/desk-gavel.jpeg';
+import deskGavel from '../assets/photos/gallery-desk-crimson-hd.jpg';
 import headshot1 from '../assets/photos/gallery-headshot-yellow.jpg';
 
 export interface GalleryPhoto {
@@ -20,8 +20,8 @@ export const galleryPhotos: GalleryPhoto[] = [
 	{
 		kind: 'photo',
 		src: deskGavel,
-		alt: 'Grace Lakey at a laptop with her AuctionStream business partner Gracie, with a clothing rack and wood-slat wall behind them',
-		objectPosition: 'center 40%',
+		alt: 'Grace Lakey at a laptop with her AuctionStream business partner Gracie against a crimson background',
+		objectPosition: 'center',
 	},
 	{
 		kind: 'photo',
