@@ -102,6 +102,12 @@ import Glitter from './Glitter.astro';
 		pointer-events: none;
 	}
 
+	@media (max-width: 767px) {
+		.services-sweep {
+			display: none;
+		}
+	}
+
 	.services h2 {
 		color: var(--crimson);
 		font-size: clamp(2.25rem, 5vw, 4rem);

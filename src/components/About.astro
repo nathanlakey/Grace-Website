@@ -111,16 +111,21 @@ import glitterTrail from '../assets/brand/glitter-trail.png';
 		}
 	}
 
-	/* Phones: the tablet sweep above is too big and drifts over the "About"
-	   heading, so swap in a small, clipped corner accent that can't overlap
-	   text, buttons, or the photo, and can't cause horizontal scroll. */
-	@media (max-width: 480px) {
+	@media (max-width: 767px) {
+		.about {
+			padding-top: 2rem;
+			overflow-x: clip;
+		}
+
 		.about-sweep {
-			top: 0;
-			left: auto;
+			top: -44px;
 			right: 0;
-			width: 110px;
-			overflow: hidden;
+			left: auto;
+			width: 90vw;
+		}
+
+		.about-glitter {
+			transform: scaleX(-1) rotate(5deg);
 		}
 	}
 
