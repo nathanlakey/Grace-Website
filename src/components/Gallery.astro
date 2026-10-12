@@ -2,23 +2,21 @@
 import { Image, getImage } from 'astro:assets';
 import { galleryPhotos } from '../data/gallery';
 import logoCoral from '../assets/brand/logo-coral.svg';
-import logoCream from '../assets/brand/logo-cream.svg';
-import Confetti from './Confetti.astro';
+import Glitter from './Glitter.astro';
 
 // Crop the Canva export's empty margins without changing the shared logo assets.
 const sealView = '#svgView(viewBox(65,166,680,680))';
 
 // larger copy for the lightbox, only fetched when a photo is opened
 const fullSizeSrcs = await Promise.all(
-	galleryPhotos.map(async (photo) => photo.kind === 'photo'
-		? (await getImage({ src: photo.src, width: 1600, format: 'webp' })).src
-		: undefined)
+	galleryPhotos.map(async (photo) =>
+		(await getImage({ src: photo.src, width: 1600, format: 'webp' })).src)
 );
 ---
 
 <section id="gallery" class="gallery">
 	<div class="gallery-sweep" aria-hidden="true">
-		<Confetti variant="sweep" />
+		<Glitter />
 	</div>
 	<div class="gallery-inner">
 		<ul class="gallery-grid">
@@ -31,25 +29,18 @@ const fullSizeSrcs = await Promise.all(
 			</li>
 			{galleryPhotos.map((photo, index) => (
 				<li class="gallery-item">
-					{photo.kind === 'placeholder' ? (
-						<div class="gallery-placeholder">
-							<img src={logoCream.src + sealView} alt="" class="placeholder-seal" />
-							<p>{photo.label}</p>
-						</div>
-					) : (
-						<button type="button" class="gallery-trigger" data-full={fullSizeSrcs[index]}>
-							<Image
-								src={photo.src}
-								alt={photo.alt}
-								style={`object-position: ${photo.objectPosition};`}
-								widths={[400, 800, 1200]}
-								sizes="(min-width: 1248px) 381px, (min-width: 641px) calc((100vw - 104px) / 3), calc(100vw - 48px)"
-								format="webp"
-								loading="lazy"
-								decoding="async"
-							/>
-						</button>
-					)}
+					<button type="button" class="gallery-trigger" data-full={fullSizeSrcs[index]}>
+						<Image
+							src={photo.src}
+							alt={photo.alt}
+							style={`object-position: ${photo.objectPosition};`}
+							widths={[400, 800, 1200]}
+							sizes="(min-width: 1248px) 381px, (min-width: 641px) calc((100vw - 104px) / 3), calc(100vw - 48px)"
+							format="webp"
+							loading="lazy"
+							decoding="async"
+						/>
+					</button>
 				</li>
 			))}
 		</ul>
@@ -178,25 +169,6 @@ const fullSizeSrcs = await Promise.all(
 		width: 200px;
 		height: 200px;
 		object-fit: fill;
-	}
-
-	.gallery-placeholder {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		background-color: var(--crimson);
-		color: var(--cream);
-		font-size: 0.875rem;
-	}
-
-	.placeholder-seal {
-		width: 40%;
-		aspect-ratio: 1;
-		object-fit: fill;
-		margin-bottom: 0.75rem;
 	}
 
 	.gallery-trigger {

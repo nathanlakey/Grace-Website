@@ -1,0 +1,32 @@
+---
+import glitterTrail from '../assets/brand/glitter-trail.png';
+---
+
+<div class="glitter" aria-hidden="true">
+	<img src={glitterTrail.src} width={glitterTrail.width} height={glitterTrail.height} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+</div>
+
+<style>
+	.glitter {
+		position: absolute;
+		inset: 0;
+		overflow: clip;
+		pointer-events: none;
+	}
+
+	.glitter img {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 100%;
+		height: auto;
+		transform: translate(-50%, -50%) rotate(-35deg);
+		pointer-events: none;
+	}
+
+	@media (width < 600px) {
+		.glitter {
+			display: none;
+		}
+	}
+</style>

@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import heroPhoto from '../assets/photos/hero-cutout.png';
+import heroPhoto from '../assets/photos/hero-coral-block.jpg';
 ---
 
 <section id="top" class="hero">
@@ -20,7 +20,6 @@ import heroPhoto from '../assets/photos/hero-cutout.png';
 		</div>
 
 		<div class="hero-visual">
-			<div class="hero-block"></div>
 			<Image
 				src={heroPhoto}
 				alt="Grace Lakey smiling in a black suit with feathered cuffs, hands in her hair"
@@ -104,18 +103,8 @@ import heroPhoto from '../assets/photos/hero-cutout.png';
 	.hero-visual {
 		position: relative;
 		width: min(100%, 28rem);
-		aspect-ratio: 990 / 1394;
+		aspect-ratio: 895 / 767;
 		margin: 0 auto;
-	}
-
-	.hero-block {
-		position: absolute;
-		left: 6%;
-		right: 6%;
-		bottom: 0;
-		height: 86%;
-		background-color: var(--coral);
-		border-radius: 1rem 1rem 0 0;
 	}
 
 	.hero-visual :global(.hero-photo) {
@@ -149,6 +138,7 @@ import heroPhoto from '../assets/photos/hero-cutout.png';
 
 		.hero-visual {
 			width: min(100%, 32rem, 46svh);
+			aspect-ratio: 990 / 1394;
 			margin: 0 0 0 auto;
 		}
 	}

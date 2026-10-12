@@ -1,30 +1,29 @@
 ---
 import { Image } from 'astro:assets';
-import aboutPhoto from '../assets/photos/headshot-3.jpeg';
+import aboutPhoto from '../assets/photos/about-chair-yellow.png';
 import logoCoral from '../assets/brand/logo-coral.svg';
 import { credentials } from '../data/credentials';
-import Confetti from './Confetti.astro';
+import Glitter from './Glitter.astro';
 ---
 
 <section id="about" class="about">
 	<div class="about-sweep" aria-hidden="true">
-		<Confetti variant="sweep" />
+		<Glitter />
 	</div>
 	<div class="about-grid">
 		<div class="about-visual">
 			<img src={logoCoral.src} alt="" class="section-seal" />
 			<h2>About</h2>
-			<div class="photo-frame">
-				<Image
-					src={aboutPhoto}
-					alt="Grace Lakey sitting in a tan chair wearing a polka-dot top and olive skirt"
-					widths={[400, 800, 1200]}
-					sizes="(min-width: 901px) 520px, (min-width: 432px) 384px, 100vw"
-					format="webp"
-					loading="lazy"
-					decoding="async"
-				/>
-			</div>
+			<Image
+				src={aboutPhoto}
+				alt="Grace Lakey sitting in a tan chair wearing a polka-dot top and olive skirt"
+				class="about-photo"
+				widths={[400, 800, 1200]}
+				sizes="(min-width: 901px) 520px, (min-width: 432px) 384px, 100vw"
+				format="webp"
+				loading="lazy"
+				decoding="async"
+			/>
 		</div>
 
 		<div class="about-content">
@@ -86,6 +85,7 @@ import Confetti from './Confetti.astro';
 		height: 180px;
 		z-index: -1;
 		pointer-events: none;
+		transform: scaleX(-1);
 	}
 
 	.about-grid {
@@ -114,16 +114,9 @@ import Confetti from './Confetti.astro';
 		width: 100%;
 	}
 
-	.photo-frame {
-		aspect-ratio: 4 / 5;
-		background-color: var(--mustard);
-	}
-
-	.photo-frame :global(img) {
+	.about-visual :global(.about-photo) {
 		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
+		height: auto;
 	}
 
 	.tagline {

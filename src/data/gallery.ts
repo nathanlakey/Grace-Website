@@ -1,6 +1,7 @@
 import groundbreaking2 from '../assets/photos/groundbreaking-2.jpg';
-import deskGavel from '../assets/photos/desk-gavel.jpeg';
-import headshot1 from '../assets/photos/headshot-1.jpeg';
+import thinkery from '../assets/photos/gallery-thinkery.jpg';
+import deskGavel from '../assets/photos/gallery-desk-crimson.jpg';
+import headshot1 from '../assets/photos/gallery-headshot-yellow.jpg';
 
 export interface GalleryPhoto {
 	kind: 'photo';
@@ -9,20 +10,18 @@ export interface GalleryPhoto {
 	objectPosition: string;
 }
 
-export interface GalleryPlaceholder {
-	kind: 'placeholder';
-	label: string;
-}
-
-export const galleryPhotos: (GalleryPhoto | GalleryPlaceholder)[] = [
-	// TODO: Replace this Thinkery stage placeholder with a kind: 'photo' entry
-	// containing the imported image, alt text, and objectPosition.
-	{ kind: 'placeholder', label: 'photo coming soon' },
+export const galleryPhotos: GalleryPhoto[] = [
+	{
+		kind: 'photo',
+		src: thinkery,
+		alt: 'Grace Lakey speaking into a microphone in front of the Thinkery sign and a wall of greenery',
+		objectPosition: 'center 45%',
+	},
 	{
 		kind: 'photo',
 		src: deskGavel,
-		alt: 'Grace Lakey at a laptop with her AuctionStream business partner Gracie',
-		objectPosition: 'center 40%',
+		alt: 'Grace Lakey at a laptop with her AuctionStream business partner Gracie against a crimson background',
+		objectPosition: 'center',
 	},
 	{
 		kind: 'photo',
@@ -33,7 +32,7 @@ export const galleryPhotos: (GalleryPhoto | GalleryPlaceholder)[] = [
 	{
 		kind: 'photo',
 		src: headshot1,
-		alt: 'Grace Lakey smiling in a black blazer and polka-dot top',
-		objectPosition: 'center 25%',
+		alt: 'Grace Lakey smiling in a black blazer and polka-dot top against a yellow background',
+		objectPosition: 'center',
 	},
 ];
