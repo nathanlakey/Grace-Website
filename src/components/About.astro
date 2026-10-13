@@ -1,14 +1,12 @@
 ---
 import { Image } from 'astro:assets';
 import aboutPhoto from '../assets/photos/about-chair-yellow-hd.jpg';
-import logoCoral from '../assets/brand/logo-coral-clean.svg';
 import { credentials } from '../data/credentials';
 ---
 
 <section id="about" class="about">
 	<div class="about-grid">
 		<div class="about-visual">
-			<img src={logoCoral.src} alt="" class="section-seal" />
 			<h2>About</h2>
 			<Image
 				src={aboutPhoto}
@@ -161,10 +159,6 @@ import { credentials } from '../data/credentials';
 			margin: 0;
 			max-width: none;
 			width: 100%;
-		}
-
-		.about-content {
-			margin-top: calc(48px + 1rem);
 		}
 	}
 </style>

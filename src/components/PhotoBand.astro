@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import bandPhoto from '../assets/photos/photo-band-wide.jpg';
-import logoSeal from '../assets/brand/logo-coral-clean.svg';
 ---
 
 <section class="photo-band">
@@ -15,9 +14,6 @@ import logoSeal from '../assets/brand/logo-coral-clean.svg';
 		loading="lazy"
 		decoding="async"
 	/>
-	<div class="band-inner">
-		<img src={logoSeal.src} alt="Grace Lakey logo seal" class="band-logo" />
-	</div>
 </section>
 
 <style>
@@ -34,20 +30,6 @@ import logoSeal from '../assets/brand/logo-coral-clean.svg';
 		height: 100%;
 		object-fit: cover;
 		object-position: center center;
-	}
-
-	.band-inner {
-		position: absolute;
-		z-index: 2;
-		inset: 1.5rem 1.5rem auto;
-		max-width: 72rem;
-		margin: 0 auto;
-	}
-
-	.band-logo {
-		width: 48px;
-		height: 48px;
-		object-fit: contain;
 	}
 
 	@media (min-width: 641px) {
