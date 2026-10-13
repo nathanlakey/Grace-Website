@@ -46,6 +46,7 @@ const heroPreload = await getImage({
 	.page-wrap {
 		position: relative;
 		width: 100%;
+		overflow-x: clip;
 	}
 
 	.glitter-thread {
@@ -57,12 +58,13 @@ const heroPreload = await getImage({
 			display: block;
 			position: absolute;
 			top: 0;
-			right: 0;
-			width: 150px;
+			right: -24px;
+			width: 110px;
 			height: 100%;
+			opacity: 0.85;
 			background-image: url('/images/glitter-thread-mobile.png');
 			background-repeat: repeat-y;
-			background-size: 150px 919px;
+			background-size: 110px 674px;
 			background-position: right top;
 			pointer-events: none;
 			z-index: 1;
