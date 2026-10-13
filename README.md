@@ -48,9 +48,9 @@ desktop and 52px at widths up to 768px; small seals are 48px.
 ## Photo band and footer layout
 
 The photo band uses `src/assets/photos/photo-band-wide.jpg` as a full-width
-image with `object-fit: cover` and `object-position: center 30%`, without a
+image with `object-fit: cover` and `object-position: center center`, without a
 background color or edge fade. It is 420px tall above 640px and 280px on phones.
-The seal and footer content align with the centered 72rem page container,
+The footer content aligns with the centered 72rem page container,
 with 1.5rem side gutters. Footer social links remain on the right on desktop.
 
 ## 👀 Want to learn more?

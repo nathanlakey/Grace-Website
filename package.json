@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node -e \"try{fs.rmSync('node_modules/.astro',{recursive:true,force:true});fs.rmSync('.astro',{recursive:true,force:true})}catch(e){}\"",
     "build": "astro build",
     "preview": "astro preview",
     "test": "node --experimental-strip-types --test",
