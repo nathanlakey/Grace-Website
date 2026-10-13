@@ -1,13 +1,9 @@
 ---
 import { services } from '../data/services';
-import Glitter from './Glitter.astro';
 ---
 
 <section id="services" class="services">
 	<div class="services-inner">
-		<div class="services-sweep" aria-hidden="true">
-			<Glitter />
-		</div>
 		<h2>My Services</h2>
 		<p class="services-hint">tap a service to explore</p>
 		<!-- TODO: intro text between "My Services" heading and the tiles — not found in docs/copy.md -->
@@ -78,7 +74,6 @@ import Glitter from './Glitter.astro';
 <style>
 	.services {
 		position: relative;
-		isolation: isolate;
 		overflow: clip;
 		background-color: var(--cream);
 		color: var(--ink);
@@ -87,25 +82,9 @@ import Glitter from './Glitter.astro';
 
 	.services-inner {
 		position: relative;
+		z-index: 2;
 		max-width: 72rem;
 		margin: 0 auto;
-	}
-
-	.services-sweep {
-		position: absolute;
-		top: -3.5rem;
-		right: 0;
-		width: min(360px, 45%);
-		height: 80px;
-		z-index: -1;
-		transform: rotate(-8deg);
-		pointer-events: none;
-	}
-
-	@media (max-width: 767px) {
-		.services-sweep {
-			display: none;
-		}
 	}
 
 	.services h2 {

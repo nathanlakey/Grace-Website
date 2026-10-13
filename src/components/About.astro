@@ -3,21 +3,9 @@ import { Image } from 'astro:assets';
 import aboutPhoto from '../assets/photos/about-chair-yellow-hd.jpg';
 import logoCoral from '../assets/brand/logo-coral-clean.svg';
 import { credentials } from '../data/credentials';
-import glitterTrail from '../assets/brand/glitter-trail.png';
 ---
 
 <section id="about" class="about">
-	<div class="about-sweep" aria-hidden="true">
-		<img
-			src={glitterTrail.src}
-			width={glitterTrail.width}
-			height={glitterTrail.height}
-			alt=""
-			class="about-glitter"
-			loading="lazy"
-			decoding="async"
-		/>
-	</div>
 	<div class="about-grid">
 		<div class="about-visual">
 			<img src={logoCoral.src} alt="" class="section-seal" />
@@ -78,60 +66,20 @@ import glitterTrail from '../assets/brand/glitter-trail.png';
 
 <style>
 	.about {
-		position: relative;
-		isolation: isolate;
 		background-color: var(--cream);
 		color: var(--ink);
 		padding: 6rem 1.5rem;
 	}
 
-	.about-sweep {
-		position: absolute;
-		top: -7rem;
-		left: max(0px, calc((100% - 72rem) / 2 + 2.5rem));
-		width: min(720px, 85vw);
-		z-index: 0;
-		pointer-events: none;
-	}
-
-	.about-glitter {
-		width: 100%;
-		height: auto;
-		display: block;
-		transform: scaleX(-1) rotate(15deg);
-		transform-origin: center;
-		pointer-events: none;
-	}
-
-	@media (max-width: 900px) {
-		.about-sweep {
-			top: -4rem;
-			left: 1rem;
-			width: min(460px, 90vw);
-		}
-	}
-
 	@media (max-width: 767px) {
 		.about {
 			padding-top: 2rem;
-			overflow-x: clip;
-		}
-
-		.about-sweep {
-			top: -44px;
-			right: 0;
-			left: auto;
-			width: 90vw;
-		}
-
-		.about-glitter {
-			transform: scaleX(-1) rotate(5deg);
 		}
 	}
 
 	.about-grid {
 		position: relative;
-		z-index: 1;
+		z-index: 2;
 		max-width: 72rem;
 		margin: 0 auto;
 		display: grid;

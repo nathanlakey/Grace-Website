@@ -29,12 +29,43 @@ const heroPreload = await getImage({
 		imagesizes={heroImage.sizes}
 		fetchpriority="high"
 	/>
-	<Hero />
-	<About />
-	<Services />
-	<Gallery />
-	<FAQ />
-	<Booking />
-	<PhotoBand />
-	<Footer />
+	<div class="page-wrap">
+		<div class="glitter-thread" aria-hidden="true"></div>
+		<Hero />
+		<About />
+		<Services />
+		<Gallery />
+		<FAQ />
+		<Booking />
+		<PhotoBand />
+		<Footer />
+	</div>
 </BaseLayout>
+
+<style>
+	.page-wrap {
+		position: relative;
+		width: 100%;
+	}
+
+	.glitter-thread {
+		display: none;
+	}
+
+	@media (max-width: 767px) {
+		.glitter-thread {
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 150px;
+			height: 100%;
+			background-image: url('/images/glitter-thread-mobile.png');
+			background-repeat: repeat-y;
+			background-size: 150px 1400px;
+			background-position: right top;
+			pointer-events: none;
+			z-index: 1;
+		}
+	}
+</style>

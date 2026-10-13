@@ -2,7 +2,6 @@
 import { Image, getImage } from 'astro:assets';
 import { galleryPhotos } from '../data/gallery';
 import logoCoral from '../assets/brand/logo-coral-clean.svg';
-import glitterTrail from '../assets/brand/glitter-trail.png';
 
 // larger copy for the lightbox, only fetched when a photo is opened
 const fullSizeSrcs = await Promise.all(
@@ -14,17 +13,6 @@ const fullSizeSrcs = await Promise.all(
 <section id="gallery" class="gallery">
 	<div class="gallery-inner">
 		<ul class="gallery-grid">
-			<li class="gallery-sweep" aria-hidden="true">
-				<img
-					src={glitterTrail.src}
-					width={glitterTrail.width}
-					height={glitterTrail.height}
-					alt=""
-					class="gallery-glitter"
-					loading="lazy"
-					decoding="async"
-				/>
-			</li>
 			<li class="gallery-heading">
 				<img src={logoCoral.src} alt="" class="section-seal" />
 				<h2>Gallery</h2>
@@ -118,7 +106,6 @@ const fullSizeSrcs = await Promise.all(
 <style>
 	.gallery {
 		position: relative;
-		isolation: isolate;
 		overflow: clip;
 		background-color: var(--cream);
 		color: var(--ink);
@@ -127,45 +114,9 @@ const fullSizeSrcs = await Promise.all(
 
 	.gallery-inner {
 		position: relative;
-		z-index: 1;
+		z-index: 2;
 		max-width: 75rem;
 		margin: 0 auto;
-	}
-
-	/* Spans the right column (Thinkery down to the yellow headshot) and starts
-	   20px inside the grid's right edge; overflow clipping caps the overlap. */
-	.gallery-sweep {
-		display: none;
-		position: absolute;
-		grid-column: 3;
-		grid-row: 1 / 3;
-		top: 0;
-		bottom: 0;
-		left: calc(100% - 20px);
-		width: 200px;
-		z-index: 0;
-		overflow: hidden;
-		container-type: size;
-		pointer-events: none;
-	}
-
-	.gallery-glitter {
-		position: absolute;
-		top: 50%;
-		left: 40px;
-		width: 72cqh;
-		height: auto;
-		max-width: none;
-		display: block;
-		transform: translate(-50%, -50%) rotate(45deg);
-		pointer-events: none;
-	}
-
-	/* Below ~1400px the cream margin beside the grid is too narrow for the trail. */
-	@media (min-width: 1400px) {
-		.gallery-sweep {
-			display: block;
-		}
 	}
 
 	.gallery h2 {
